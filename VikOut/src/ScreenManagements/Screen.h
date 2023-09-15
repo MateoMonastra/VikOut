@@ -3,7 +3,6 @@
 enum class Screen
 {
     Menu,
-    SinglePlayer,
-    MultiPlayer,
+    Game, 
     Exit
 };

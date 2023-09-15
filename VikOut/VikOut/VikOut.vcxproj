@@ -22,12 +22,15 @@
     <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="..\src\Menu\Menu.cpp" />
     <ClCompile Include="..\src\ScreenManagements\ScreenManager.cpp" />
+    <ClCompile Include="Game.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\Menu\Menu.h" />
     <ClInclude Include="..\src\ProyectUtilities\Utilities.h" />
     <ClInclude Include="..\src\ScreenManagements\Screen.h" />
     <ClInclude Include="..\src\ScreenManagements\ScreenManager.h" />
+    <ClInclude Include="Colours.h" />
+    <ClInclude Include="Game.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

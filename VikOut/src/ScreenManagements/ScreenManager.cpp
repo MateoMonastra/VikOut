@@ -36,7 +36,7 @@ namespace scenemanager
 
 		slWindow(windowW, windowH, "VikOut", false);
 
-        currentScreen = Screen::Menu;
+        currentScreen = Screen::Game;
 
 		menu::InitMenu();
 		
@@ -50,11 +50,8 @@ namespace scenemanager
 		case Screen::Menu:
 			menu::MenuUpdate(currentScreen);
 			break;
-		case Screen::SinglePlayer:
+		case Screen::Game:
 			
-			break;
-		case Screen::MultiPlayer:
-
 			break;
 		case Screen::Exit:
 			break;
