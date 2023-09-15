@@ -70,10 +70,7 @@ namespace scenemanager
 		case Screen::Menu:
 			menu::MenuDrawing();
 			break;
-		case Screen::SinglePlayer:
-			
-			break;
-		case Screen::MultiPlayer:
+		case Screen::Game:
 			
 			break;
 		case Screen::Exit:
