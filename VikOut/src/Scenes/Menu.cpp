@@ -12,9 +12,9 @@ namespace menu
 	};
 	struct Button
 	{
-		Vector2 RecPosition;
-		int RecW;
-		int RecH;
+		Vector2 TexturePosition;
+		int SpriteW;
+		int SpriteH;
 	
 
 		const char* text = " ";
@@ -32,11 +32,12 @@ namespace menu
 
 	void InitMenu()
 	{
+		
 
-
-		title.RecPosition = { 800 /2 , 800 -80 };
-		title.RecW = 350;
-		title.RecH = 90;
+		title.image = slLoadTexture("assets/jungle/PNG/menu/Title.png");
+		title.TexturePosition = { 800 /2 , 800 -80 };
+		title.SpriteW = 600;
+		title.SpriteH = 600;
 		
 
 		title.TextPosition = { 800 / 2 , 800 - 80 };
@@ -44,9 +45,9 @@ namespace menu
 		title.size = 40;
 
 
-		singlePlayer.RecPosition = { 400 - 325, 175 };
-		singlePlayer.RecW = 250;
-		singlePlayer.RecH = 90;
+		singlePlayer.TexturePosition = { 400 - 325, 175 };
+		singlePlayer.SpriteW = 250;
+		singlePlayer.SpriteH = 90;
 		
 
 		singlePlayer.TextPosition = { 400 / 2 - 320, 200 };
@@ -54,9 +55,9 @@ namespace menu
 		singlePlayer.size = 40;
 
 
-		multiPlayer.RecPosition = { 400 + 65, 175 };
-		multiPlayer.RecW = 250;
-		multiPlayer.RecH = 90;
+		multiPlayer.TexturePosition = { 400 + 65, 175 };
+		multiPlayer.SpriteW = 250;
+		multiPlayer.SpriteH = 90;
 		
 
 		multiPlayer.TextPosition = { 400 + 75, 200 };
@@ -64,9 +65,9 @@ namespace menu
 		multiPlayer.size = 40;
 
 
-		exit.RecPosition = { 400 - 128, 350 };
-		exit.RecW = 250;
-		exit.RecH = 90;
+		exit.TexturePosition = { 400 - 128, 350 };
+		exit.SpriteW = 250;
+		exit.SpriteH = 90;
 		
 
 		exit.TextPosition = { 400 - 40, 375 };
@@ -78,10 +79,10 @@ namespace menu
 	bool MouseMenuColision(float mousex, float mousey, Button rec)
 	{
 
-		if (mousex >= rec.RecPosition.x &&
-			mousex <= rec.RecPosition.x + rec.RecW &&
-			mousey >= rec.RecPosition.y &&
-			mousey <= rec.RecPosition.y + rec.RecH)
+		if (mousex >= rec.TexturePosition.x &&
+			mousex <= rec.TexturePosition.x + rec.SpriteW &&
+			mousey >= rec.TexturePosition.y &&
+			mousey <= rec.TexturePosition.y + rec.SpriteH)
 		{
 			return true;
 		}
@@ -134,22 +135,11 @@ namespace menu
 
 	void MenuDrawing()
 	{
-		
-		slSetForeColor(colors::RED.r, colors::RED.g, colors::RED.b, 1);
-		slRectangleFill(title.RecPosition.x, title.RecPosition.y, title.RecW, title.RecH);
-		
-		slSetForeColor(colors::ORANGE.r, colors::ORANGE.g, colors::ORANGE.b, 1);
-		slRectangleFill(singlePlayer.RecPosition.x, singlePlayer.RecPosition.y, singlePlayer.RecW, singlePlayer.RecH);
-		
-		slSetForeColor(colors::ORANGE.r, colors::ORANGE.g, colors::ORANGE.b, 0.5);
-		slRectangleFill(multiPlayer.RecPosition.x, multiPlayer.RecPosition.y, multiPlayer.RecW, multiPlayer.RecH);
-		
-		slSetForeColor(colors::ORANGE.r, colors::ORANGE.g, colors::ORANGE.b, 1);
-		slRectangleFill(exit.RecPosition.x, exit.RecPosition.y, exit.RecW, exit.RecH);
+	int backGroundSprite = slLoadTexture("assets/jungle/PNG/menu/bg.png");
 
-		slSetForeColor(colors::WHITE.r, colors::WHITE.g, colors::WHITE.b, 1);
-		slSetFontSize(24);
-		slText( title.TextPosition.x, title.TextPosition.y, "VikOut" );
+		slSprite(backGroundSprite,450,475, 900, 950);
+		
+		slSprite(title.image,title.TexturePosition.x, title.TexturePosition.y,title.SpriteW,title.SpriteH);
 		
 		/*slText( singlePlayer.TextPosition.x, singlePlayer.TextPosition.y, "Single Mode");
 		slText( multiPlayer.TextPosition.x, multiPlayer.TextPosition.y, "Multiplayer");

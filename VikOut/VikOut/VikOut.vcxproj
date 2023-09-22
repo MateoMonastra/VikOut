@@ -113,7 +113,7 @@
     <PostBuildEvent>
       <Command>xcopy /y "$(SolutionDir)lib\sigil\dll" "$(OutDir)"
 
-xcopy /y /i "$(ProjectDir)assets\" "$(OutDir)assets"</Command>
+xcopy /y /i /s "$(ProjectDir)assets" "$(OutDir)assets"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -140,7 +140,7 @@ xcopy /y /i "$(ProjectDir)assets\" "$(OutDir)assets"</Command>
     <PostBuildEvent>
       <Command>xcopy /y "$(SolutionDir)lib\sigil\dll" "$(OutDir)"
 
-xcopy /y /i "$(ProjectDir)assets\" "$(OutDir)assets"</Command>
+xcopy /y /i /s "$(ProjectDir)assets" "$(OutDir)assets"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

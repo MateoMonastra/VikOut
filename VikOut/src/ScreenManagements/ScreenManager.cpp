@@ -32,13 +32,11 @@ namespace scenemanager
 
     static void InitProgram()
     {
-		int windowH = 850;
-		int windowW = 800;
+		int windowH = 950;
+		int windowW = 900;
 		
 
 		slWindow(windowW, windowH, "VikOut", false);
-		
-		slSetFont(slLoadFont("assets/euphorigenic.ttf"), 40);
 		slSetTextAlign(SL_ALIGN_CENTER);
 
         currentScreen = Screen::Menu;
