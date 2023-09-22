@@ -23,9 +23,9 @@
     <ClCompile Include="..\src\Scenes\Game.cpp" />
     <ClCompile Include="..\src\Scenes\Menu.cpp" />
     <ClCompile Include="..\src\ScreenManagements\ScreenManager.cpp" />
-    <ClCompile Include="Rectangles.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\src\Objects\Rectangles.h" />
     <ClInclude Include="..\src\ProyectUtilities\Colours.h" />
     <ClInclude Include="..\src\ProyectUtilities\Utilities.h" />
     <ClInclude Include="..\src\Scenes\Menu.h" />
@@ -107,8 +107,12 @@
       <AdditionalDependencies>sigil.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>copy /y "$(SolutionDir)lib\sigil\dll" "$(OutDir)"</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>xcopy /y "$(SolutionDir)lib\sigil\dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>

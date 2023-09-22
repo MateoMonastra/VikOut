@@ -1,3 +1,6 @@
-﻿  El sistema no puede encontrar el archivo especificado.
-C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(150,5): error MSB3073: El comando "copy /y "C:\Users\Windows 10\Documents\GitHub\Repo\VikOut\VikOut\lib\sigil\dll" "C:\Users\Windows 10\Documents\GitHub\Repo\VikOut\VikOut\bin\Debug\"
-C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(150,5): error MSB3073: :VCEnd" salió con el código 1.
+﻿  VikOut.vcxproj -> C:\Users\Aula 2\Documents\GitHub\VikOut\VikOut\bin\Debug\VikOut.exe
+  C:\Users\Aula 2\Documents\GitHub\VikOut\VikOut\lib\sigil\dll\glew32.dll
+  C:\Users\Aula 2\Documents\GitHub\VikOut\VikOut\lib\sigil\dll\OpenAL32.dll
+  C:\Users\Aula 2\Documents\GitHub\VikOut\VikOut\lib\sigil\dll\sigil.dll
+  C:\Users\Aula 2\Documents\GitHub\VikOut\VikOut\lib\sigil\dll\wrap_oal.dll
+  4 archivo(s) copiado(s)

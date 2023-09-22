@@ -21,9 +21,6 @@
     <ClCompile Include="..\src\ScreenManagements\ScreenManager.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="Rectangles.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Scenes\Game.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
@@ -45,6 +42,9 @@
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Scenes\Menu.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Objects\Rectangles.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>
