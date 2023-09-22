@@ -1,2 +1,3 @@
-﻿  ScreenManager.cpp
-  VikOut.vcxproj -> C:\Users\Aula 2\Documents\GitHub\VikOut\VikOut\bin\Debug\VikOut.exe
+﻿  El sistema no puede encontrar el archivo especificado.
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(150,5): error MSB3073: El comando "copy /y "C:\Users\Windows 10\Documents\GitHub\Repo\VikOut\VikOut\lib\sigil\dll" "C:\Users\Windows 10\Documents\GitHub\Repo\VikOut\VikOut\bin\Debug\"
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(150,5): error MSB3073: :VCEnd" salió con el código 1.

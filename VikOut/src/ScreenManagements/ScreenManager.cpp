@@ -1,7 +1,7 @@
 #include "ScreenManagements/ScreenManager.h"
 #include "ScreenManagements/Screen.h"
 #include "ProyectUtilities/Utilities.h"
-#include "Menu/Menu.h"
+#include "Scenes/Menu.h"
 
 
 
@@ -36,7 +36,7 @@ namespace scenemanager
 
 		slWindow(windowW, windowH, "VikOut", false);
 
-        currentScreen = Screen::Game;
+        currentScreen = Screen::Menu;
 
 		menu::InitMenu();
 		
