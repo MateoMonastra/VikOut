@@ -20,6 +20,7 @@ namespace menu
 		const char* text = " ";
 		Vector2 TextPosition;
 		int size;
+		int image;
 	};
 
 	static Button title;
@@ -32,12 +33,13 @@ namespace menu
 	void InitMenu()
 	{
 
-		title.RecPosition = { 400 / 2 - 180 , 20 };
+
+		title.RecPosition = { 800 /2 , 800 -80 };
 		title.RecW = 350;
 		title.RecH = 90;
 		
 
-		title.TextPosition = { 400 - 100, 50 };
+		title.TextPosition = { 800 / 2 , 800 - 80 };
 		title.text = "VikOut";
 		title.size = 40;
 
@@ -133,22 +135,25 @@ namespace menu
 	void MenuDrawing()
 	{
 		
-		slSetForeColor(colors::YELLOW.r, colors::YELLOW.g, colors::YELLOW.b, 1);
+		slSetForeColor(colors::RED.r, colors::RED.g, colors::RED.b, 1);
 		slRectangleFill(title.RecPosition.x, title.RecPosition.y, title.RecW, title.RecH);
 		
-		slSetForeColor(colors::RED.r, colors::RED.g, colors::RED.b, 1);
+		slSetForeColor(colors::ORANGE.r, colors::ORANGE.g, colors::ORANGE.b, 1);
 		slRectangleFill(singlePlayer.RecPosition.x, singlePlayer.RecPosition.y, singlePlayer.RecW, singlePlayer.RecH);
 		
-		slSetForeColor(colors::RED.r, colors::RED.g, colors::RED.b, 1);
+		slSetForeColor(colors::ORANGE.r, colors::ORANGE.g, colors::ORANGE.b, 0.5);
 		slRectangleFill(multiPlayer.RecPosition.x, multiPlayer.RecPosition.y, multiPlayer.RecW, multiPlayer.RecH);
 		
-		slSetForeColor(colors::RED.r, colors::RED.g, colors::RED.b, 1);
+		slSetForeColor(colors::ORANGE.r, colors::ORANGE.g, colors::ORANGE.b, 1);
 		slRectangleFill(exit.RecPosition.x, exit.RecPosition.y, exit.RecW, exit.RecH);
 
-		slText( title.TextPosition.x, title.TextPosition.y, "VikoPong" );
-		slText( singlePlayer.TextPosition.x, singlePlayer.TextPosition.y, "Single Mode");
+		slSetForeColor(colors::WHITE.r, colors::WHITE.g, colors::WHITE.b, 1);
+		slSetFontSize(24);
+		slText( title.TextPosition.x, title.TextPosition.y, "VikOut" );
+		
+		/*slText( singlePlayer.TextPosition.x, singlePlayer.TextPosition.y, "Single Mode");
 		slText( multiPlayer.TextPosition.x, multiPlayer.TextPosition.y, "Multiplayer");
-		slText( exit.TextPosition.x, exit.TextPosition.y, "Exit");
+		slText( exit.TextPosition.x, exit.TextPosition.y, "Exit");*/
 	}
 
 }

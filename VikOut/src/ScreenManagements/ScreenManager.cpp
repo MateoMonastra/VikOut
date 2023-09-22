@@ -24,6 +24,7 @@ namespace scenemanager
 		{
 			Update();
 			Draw();
+			
 		}
 
 		Close();
@@ -33,8 +34,12 @@ namespace scenemanager
     {
 		int windowH = 850;
 		int windowW = 800;
+		
 
 		slWindow(windowW, windowH, "VikOut", false);
+		
+		slSetFont(slLoadFont("assets/euphorigenic.ttf"), 40);
+		slSetTextAlign(SL_ALIGN_CENTER);
 
         currentScreen = Screen::Menu;
 
@@ -79,7 +84,7 @@ namespace scenemanager
 			break;
 		}
 
-		
+		slRender();
 	}
 
 	static void Close()
