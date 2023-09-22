@@ -15,74 +15,70 @@ namespace menu
 		Vector2 TexturePosition;
 		int SpriteW;
 		int SpriteH;
-	
-
-		const char* text = " ";
-		Vector2 TextPosition;
-		int size;
 		int image;
+		Color Color;
 	};
 
-	static Button title;
-	static Button singlePlayer;
-	static Button multiPlayer;
-	static Button exit;
+	static Button BackGround;
+	static Button Title;
+	static Button Play;
+	static Button Rules;
+	static Button Settings;
+	static Button Exit;
 
 	static bool MouseMenuColision(float mousex, float mousey, Button rec);
 
 	void InitMenu()
 	{
+		BackGround.image = slLoadTexture("assets/jungle/PNG/menu/bg.png");
+		BackGround.TexturePosition = { 450 , 475 };
+		BackGround.SpriteW = 900;
+		BackGround.SpriteH = 950;
+		BackGround.Color = colors::WHITE;
 		
-
-		title.image = slLoadTexture("assets/jungle/PNG/menu/Title.png");
-		title.TexturePosition = { 800 /2 , 800 -80 };
-		title.SpriteW = 600;
-		title.SpriteH = 600;
 		
-
-		title.TextPosition = { 800 / 2 , 800 - 80 };
-		title.text = "VikOut";
-		title.size = 40;
-
-
-		singlePlayer.TexturePosition = { 400 - 325, 175 };
-		singlePlayer.SpriteW = 250;
-		singlePlayer.SpriteH = 90;
 		
+		Title.image = slLoadTexture("assets/jungle/PNG/menu/Title.png");
+		Title.TexturePosition = { 800 /2 + 30 , 800 -70 };
+		Title.SpriteW = 900;
+		Title.SpriteH = 600;
+		Title.Color = colors::WHITE;
 
-		singlePlayer.TextPosition = { 400 / 2 - 320, 200 };
-		singlePlayer.text = "Single Mode";
-		singlePlayer.size = 40;
+		Play.image = slLoadTexture("assets/jungle/PNG/menu/play.png");
+		Play.TexturePosition = { 400 - 160, 375 };
+		Play.SpriteW = 140;
+		Play.SpriteH = 140;
+		Play.Color = colors::WHITE;
 
+		Rules.image = slLoadTexture("assets/jungle/PNG/menu/about.png");
+		Rules.TexturePosition = { 400 + 60, 375 };
+		Rules.SpriteW = 140;
+		Rules.SpriteH = 140;
+		Rules.Color = colors::WHITE;
 
-		multiPlayer.TexturePosition = { 400 + 65, 175 };
-		multiPlayer.SpriteW = 250;
-		multiPlayer.SpriteH = 90;
+		Settings.image = slLoadTexture("assets/jungle/PNG/menu/Setting.png");
+		Settings.TexturePosition = { 400 + 280, 375 };
+		Settings.SpriteW = 140;
+		Settings.SpriteH = 140;
+		Settings.Color = colors::WHITE;
+
+		Exit.image = slLoadTexture("assets/jungle/PNG/btn/close.png");
+		Exit.TexturePosition = { 400 + 60, 175 };
+		Exit.SpriteW = 140;
+		Exit.SpriteH = 140;
+		Exit.Color = colors::WHITE;
 		
-
-		multiPlayer.TextPosition = { 400 + 75, 200 };
-		multiPlayer.text = "Rules";
-		multiPlayer.size = 40;
-
-
-		exit.TexturePosition = { 400 - 128, 350 };
-		exit.SpriteW = 250;
-		exit.SpriteH = 90;
-		
-
-		exit.TextPosition = { 400 - 40, 375 };
-		exit.text = "Exit";
-		exit.size = 40;
-
 	}
 
 	bool MouseMenuColision(float mousex, float mousey, Button rec)
 	{
+		int bugCorrectionX = 80;
+		int bugCorrectionY = 60;
 
-		if (mousex >= rec.TexturePosition.x &&
-			mousex <= rec.TexturePosition.x + rec.SpriteW &&
-			mousey >= rec.TexturePosition.y &&
-			mousey <= rec.TexturePosition.y + rec.SpriteH)
+		if (mousex >= rec.TexturePosition.x - bugCorrectionX &&
+			mousex <= rec.TexturePosition.x - bugCorrectionX + rec.SpriteW &&
+			mousey >= rec.TexturePosition.y - bugCorrectionY &&
+			mousey <= rec.TexturePosition.y - bugCorrectionY + rec.SpriteH)
 		{
 			return true;
 		}
@@ -95,55 +91,83 @@ namespace menu
 		int mousePositionY = slGetMouseY();
 
 
-	//	if (MouseMenuColision(mousePositionX, mousePositionY, singlePlayer))
-	//	{
-	//		singlePlayer.color = WHITE;
+		if (MouseMenuColision(mousePositionX, mousePositionY, Play))
+		{
+			
+		Play.Color = colors::GRAY;
 
-	//		if (slGetMouseButton(SL_MOUSE_BUTTON_LEFT))
-	//		{
-	//			currentScreen = Screen::SinglePlayer;
-	//			game::InitGame(currentScreen);
-	//		}
-	//	}
-	//	else if (MouseMenuColision(mousePositionX, mousePositionY, multiPlayer))
-	//	{
-	//		multiPlayer.color = WHITE;
+		if (slGetMouseButton(SL_MOUSE_BUTTON_LEFT))
+			{
+				currentScreen = Screen::Game;
+			/*	game::InitGame(currentScreen);*/
+			}
+		}
+		else if (MouseMenuColision(mousePositionX, mousePositionY, Rules))
+		{
+			Rules.Color = colors::GRAY;
 
-	//		if (slGetMouseButton(SL_MOUSE_BUTTON_LEFT))
-	//		{
-	//			currentScreen = Screen::MultiPlayer;
-	//		}
-	//	}
-	//	else if (MouseMenuColision(mousePositionX, mousePositionY, exit))
-	//	{
-	//		exit.color = WHITE;
+			if (slGetMouseButton(SL_MOUSE_BUTTON_LEFT))
+			{
+				currentScreen = Screen::Rules;
+			}
+		}
+		else if (MouseMenuColision(mousePositionX, mousePositionY, Settings))
+		{
+			Settings.Color = colors::GRAY;
 
-	//		if (slGetMouseButton(SL_MOUSE_BUTTON_LEFT))
-	//		{
-	//			currentScreen = Screen::Exit;
-	//		}
-	//	}
-	//	else
-	//	{
-	//		singlePlayer.color = MAROON;
-	//		multiPlayer.color = MAROON;
-	//		exit.color = YELLOW;
-	//	}
+			if (slGetMouseButton(SL_MOUSE_BUTTON_LEFT))
+			{
+				currentScreen = Screen::Settings;
+			}
+		}
+		else if (MouseMenuColision(mousePositionX, mousePositionY, Exit))
+		{
+
+			Exit.Color = colors::GRAY;
+
+			if (slGetMouseButton(SL_MOUSE_BUTTON_LEFT))
+			{
+				currentScreen = Screen::Exit;
+			}
+		}
+		else
+		{
+			BackGround.Color = colors::WHITE;
+			Title.Color = colors::WHITE;
+			Play.Color = colors::WHITE;
+			Rules.Color = colors::WHITE;
+			Settings.Color = colors::WHITE;
+			Exit.Color = colors::WHITE;
+		}
 
 
 	}
 
 	void MenuDrawing()
 	{
-	int backGroundSprite = slLoadTexture("assets/jungle/PNG/menu/bg.png");
+	
 
-		slSprite(backGroundSprite,450,475, 900, 950);
+
+		slSetForeColor(BackGround.Color.r, BackGround.Color.g, BackGround.Color.g, 1);
+		slSprite(BackGround.image, BackGround.TexturePosition.x, BackGround.TexturePosition.y, BackGround.SpriteW, BackGround.SpriteH);
 		
-		slSprite(title.image,title.TexturePosition.x, title.TexturePosition.y,title.SpriteW,title.SpriteH);
+		slSetForeColor(Title.Color.r, Title.Color.g, Title.Color.g, 1);
+		slSprite(Title.image,Title.TexturePosition.x, Title.TexturePosition.y,Title.SpriteW,Title.SpriteH);
 		
-		/*slText( singlePlayer.TextPosition.x, singlePlayer.TextPosition.y, "Single Mode");
-		slText( multiPlayer.TextPosition.x, multiPlayer.TextPosition.y, "Multiplayer");
-		slText( exit.TextPosition.x, exit.TextPosition.y, "Exit");*/
+		slSetForeColor(Play.Color.r, Play.Color.g, Play.Color.g, 1);
+		slSprite(Play.image, Play.TexturePosition.x, Play.TexturePosition.y, Play.SpriteW, Play.SpriteH);
+		
+		slSetForeColor(Rules.Color.r, Rules.Color.g, Rules.Color.g, 1);
+		slSprite(Rules.image, Rules.TexturePosition.x, Rules.TexturePosition.y, Rules.SpriteW, Rules.SpriteH);
+		
+		slSetForeColor(Settings.Color.r, Settings.Color.g, Settings.Color.g, 1);
+		slSprite(Settings.image, Settings.TexturePosition.x, Settings.TexturePosition.y, Settings.SpriteW, Settings.SpriteH);
+		
+		slSetForeColor(Exit.Color.r, Exit.Color.g, Exit.Color.g, 1);
+		slSprite(Exit.image, Exit.TexturePosition.x, Exit.TexturePosition.y, Exit.SpriteW, Exit.SpriteH);
+
+
+		
 	}
 
 }

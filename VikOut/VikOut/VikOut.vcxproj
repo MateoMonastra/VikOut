@@ -135,7 +135,8 @@ xcopy /y /i /s "$(ProjectDir)assets" "$(OutDir)assets"</Command>
       <AdditionalDependencies>sigil.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>copy /y "$(SolutionDir)lib\sigil\dll" "$(OutDir)"</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>xcopy /y "$(SolutionDir)lib\sigil\dll" "$(OutDir)"

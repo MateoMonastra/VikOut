@@ -8,43 +8,42 @@
 
 namespace scenemanager
 {
-    Screen currentScreen;
+	Screen currentScreen;
 
 	static void InitProgram();
 	static void Update();
 	static void Draw();
-	static void Close();
 
 
 	void RunProgram()
 	{
 		InitProgram();
 
-		while (!slShouldClose() && currentScreen != Screen::Exit)
+		while (!slShouldClose() && currentScreen != Screen::Settings)
 		{
 			Update();
 			Draw();
-			
+
 		}
 
-		Close();
+		slClose();	
 	}
 
-    static void InitProgram()
-    {
+	static void InitProgram()
+	{
 		int windowH = 950;
 		int windowW = 900;
-		
+
 
 		slWindow(windowW, windowH, "VikOut", false);
 		slSetTextAlign(SL_ALIGN_CENTER);
 
-        currentScreen = Screen::Menu;
+		currentScreen = Screen::Menu;
 
 		menu::InitMenu();
-		
-    }
-	
+
+	}
+
 	static void Update()
 	{
 
@@ -54,19 +53,26 @@ namespace scenemanager
 			menu::MenuUpdate(currentScreen);
 			break;
 		case Screen::Game:
-			
+
+			break;
+		case Screen::Rules:
+
+			break;
+		case Screen::Settings:
+
 			break;
 		case Screen::Exit:
+			slClose();
 			break;
 		default:
 			break;
 		}
-		
+
 	}
 
 	static void Draw()
 	{
-		
+
 
 		switch (currentScreen)
 		{
@@ -74,9 +80,9 @@ namespace scenemanager
 			menu::MenuDrawing();
 			break;
 		case Screen::Game:
-			
+
 			break;
-		case Screen::Exit:
+		case Screen::Settings:
 			break;
 		default:
 			break;
@@ -85,8 +91,4 @@ namespace scenemanager
 		slRender();
 	}
 
-	static void Close()
-	{
-		void slClose();
-	}
 }

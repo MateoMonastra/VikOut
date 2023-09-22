@@ -1,0 +1,15 @@
+﻿  main.cpp
+C:\Users\Windows 10\Documents\GitHub\Repo\VikOut\VikOut\src\main.cpp(4,1): warning C4326: el tipo de valor devuelto de 'main' debe ser 'int' en lugar de 'void'
+  Game.cpp
+  Menu.cpp
+C:\Users\Windows 10\Documents\GitHub\Repo\VikOut\VikOut\src\Scenes\Menu.cpp(94,41): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
+C:\Users\Windows 10\Documents\GitHub\Repo\VikOut\VikOut\src\Scenes\Menu.cpp(94,25): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
+C:\Users\Windows 10\Documents\GitHub\Repo\VikOut\VikOut\src\Scenes\Menu.cpp(105,46): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
+C:\Users\Windows 10\Documents\GitHub\Repo\VikOut\VikOut\src\Scenes\Menu.cpp(105,30): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
+C:\Users\Windows 10\Documents\GitHub\Repo\VikOut\VikOut\src\Scenes\Menu.cpp(114,46): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
+C:\Users\Windows 10\Documents\GitHub\Repo\VikOut\VikOut\src\Scenes\Menu.cpp(114,30): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
+C:\Users\Windows 10\Documents\GitHub\Repo\VikOut\VikOut\src\Scenes\Menu.cpp(123,46): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
+C:\Users\Windows 10\Documents\GitHub\Repo\VikOut\VikOut\src\Scenes\Menu.cpp(123,30): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
+  ScreenManager.cpp
+MSVCRT.lib(exe_winmain.obj) : error LNK2001: símbolo externo _WinMain@16 sin resolver
+C:\Users\Windows 10\Documents\GitHub\Repo\VikOut\VikOut\bin\Release\VikOut.exe : fatal error LNK1120: 1 externos sin resolver
