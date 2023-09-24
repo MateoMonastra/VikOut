@@ -14,6 +14,7 @@ struct Ball
     bool toRight = false;
     bool toUp = false;
     bool isStraight = false;
+    int sprite;
 };
 
 void BallMovement(Ball& ball);

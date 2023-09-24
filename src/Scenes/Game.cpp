@@ -35,6 +35,8 @@ static GameState ShouldContinue();
 static void LevelGenerator();
 static bool CircleRect(float circleX, float circleY, float radius, float rectangleX, float rectangleY, float rectangleW, float rectangleH);
 
+static const int SCREEN_WIDTH = 1100;
+static const int SCREEN_HEIGHT = 950;
 static const int REC_AMOUNT = 42;
 static RecSprites Player;
 static RecSprites PlayerLive;
@@ -48,7 +50,7 @@ static GameState state;
 void InitGame(Screen currentScreen)
 {
 
-	state = GameState::ControlRules;
+	state = GameState::Playing;
 	level = Levels::Level1;
 
 	LevelGenerator();
@@ -77,8 +79,11 @@ void LevelGenerator()
 		BackGround.width = 1100;
 		BackGround.height = 950;
 
+		ball.sprite = slLoadTexture("assets/jungle/PNG/game_sprites/ball.png");
 		ball.x = 600;
 		ball.y = 110;
+		ball.height = 80;
+		ball.width = 80;
 
 		if (level == Levels::Level1)
 		{
@@ -129,16 +134,27 @@ void LevelGenerator()
 
 void GameUpdate(Screen& currentScreen)
 {
-	if (slGetKey(SL_KEY_LEFT) && Player.x > 0)
+	BallMovement(ball);
+
+	PlayerInput();
+
+	ShouldContinue();
+}
+
+void PlayerInput()
+{
+	if (state == GameState::Playing)
+	{
+	if (slGetKey(SL_KEY_LEFT) && Player.x > 0 + Player.width / 2)
 	{
 		Player.x -= Player.SPEED * slGetDeltaTime();
 	}
-	if (slGetKey(SL_KEY_RIGHT) && Player.x < 900)
+	if (slGetKey(SL_KEY_RIGHT) && Player.x < SCREEN_WIDTH - Player.width / 2)
 	{
 		Player.x += Player.SPEED * slGetDeltaTime();
 	}
+	}
 
-	ShouldContinue();
 }
 
 void DrawGame(Screen currentScreen)
@@ -162,6 +178,8 @@ void DrawGame(Screen currentScreen)
 		}
 
 		slSprite(Player.sprite, Player.x, Player.y, Player.width, Player.height);
+
+		slSprite(ball.sprite, ball.x, ball.y, ball.width, ball.height);
 
 	}
 }
