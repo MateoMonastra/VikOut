@@ -21,7 +21,6 @@
   <ItemGroup>
     <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="..\src\Objects\Ball.cpp" />
-    <ClCompile Include="..\src\ProyectUtilities\GameUtilities.cpp" />
     <ClCompile Include="..\src\Scenes\Game.cpp" />
     <ClCompile Include="..\src\Scenes\Menu.cpp" />
     <ClCompile Include="..\src\ScreenManagements\ScreenManager.cpp" />
@@ -30,7 +29,6 @@
     <ClInclude Include="..\src\Objects\Ball.h" />
     <ClInclude Include="..\src\Objects\Rectangles.h" />
     <ClInclude Include="..\src\ProyectUtilities\Colours.h" />
-    <ClInclude Include="..\src\ProyectUtilities\GameUtilities.h" />
     <ClInclude Include="..\src\ProyectUtilities\Utilities.h" />
     <ClInclude Include="..\src\Scenes\Game.h" />
     <ClInclude Include="..\src\Scenes\Menu.h" />

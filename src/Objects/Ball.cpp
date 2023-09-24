@@ -4,26 +4,11 @@
 
 void BallMovement(Ball& ball)
 {
-	if (!ball.isStraight)
-	{
-		if (ball.toUp)
-		{
-			ball.y -= ball.speed * slGetDeltaTime();
-		}
-		else
-		{
-			ball.y += ball.speed * slGetDeltaTime();
-		}
-	}
 
-	if (ball.toRight)
-	{
-		ball.x += ball.speed * slGetDeltaTime();
-	}
-	else
-	{
-		ball.x -= ball.speed * slGetDeltaTime();
-	}
+	ball.x += ball.speed * ball.directionX * slGetDeltaTime();
+
+	ball.y += ball.speed * ball.directionY * slGetDeltaTime();
+
 }
 
 void AddBallSpeed(Ball& ball)

@@ -11,9 +11,8 @@ struct Ball
     const float MAX_SPEED = 400;
     const float BASE_SPEED = 250;
     const float SPEED_INCREMENT = 60;
-    bool toRight = false;
-    bool toUp = false;
-    bool isStraight = false;
+    int directionX = 1;
+    int directionY = 1;
     int sprite;
 };
 
