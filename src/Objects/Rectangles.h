@@ -1,14 +1,16 @@
 #pragma once
 
-struct Rects
+struct RecSprites
 {
-	double x;
-	double y;
-	double width;
-	double height;
+	double x = {0};
+	double y = {0};
+	double width = {0};
+	double height = {0};
 
-	int lives;
-	bool havePowerUp;
-
+	int lives = {0};
+	bool havePowerUp = false;
+	bool isAlive = true;
+	int sprite = {0};
+	const float SPEED = 360;
 };
 

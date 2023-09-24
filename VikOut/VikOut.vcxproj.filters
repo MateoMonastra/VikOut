@@ -27,6 +27,12 @@
     <ClCompile Include="..\src\Scenes\Menu.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\ProyectUtilities\GameUtilities.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Objects\Ball.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\ProyectUtilities\Utilities.h">
@@ -45,6 +51,15 @@
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Objects\Rectangles.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Scenes\Game.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ProyectUtilities\GameUtilities.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Objects\Ball.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>

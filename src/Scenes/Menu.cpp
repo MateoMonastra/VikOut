@@ -1,7 +1,9 @@
 #include "Scenes\Menu.h"
+
 #include "ProyectUtilities\Utilities.h"
 #include "ScreenManagements/Screen.h"
 #include "ProyectUtilities/Colours.h"
+#include "Scenes/Game.h"
 
 namespace menu
 {
@@ -30,40 +32,40 @@ namespace menu
 
 	void InitMenu()
 	{
-		BackGround.image = slLoadTexture("assets/jungle/PNG/menu/bg.png");
-		BackGround.TexturePosition = { 450 , 475 };
-		BackGround.SpriteW = 900;
+		BackGround.image = slLoadTexture("assets/jungle/PNG/menu/BackGround.png");
+		BackGround.TexturePosition = { 550 , 475 };
+		BackGround.SpriteW = 1100;
 		BackGround.SpriteH = 950;
 		BackGround.Color = colors::WHITE;
 		
 		
 		
 		Title.image = slLoadTexture("assets/jungle/PNG/menu/Title.png");
-		Title.TexturePosition = { 800 /2 + 30 , 800 -70 };
+		Title.TexturePosition = { 800 /2 + 130 , 800 -120 };
 		Title.SpriteW = 900;
 		Title.SpriteH = 600;
 		Title.Color = colors::WHITE;
 
 		Play.image = slLoadTexture("assets/jungle/PNG/menu/play.png");
-		Play.TexturePosition = { 400 - 160, 375 };
+		Play.TexturePosition = { 400 - 60, 375 };
 		Play.SpriteW = 140;
 		Play.SpriteH = 140;
 		Play.Color = colors::WHITE;
 
 		Rules.image = slLoadTexture("assets/jungle/PNG/menu/about.png");
-		Rules.TexturePosition = { 400 + 60, 375 };
+		Rules.TexturePosition = { 400 + 160, 375 };
 		Rules.SpriteW = 140;
 		Rules.SpriteH = 140;
 		Rules.Color = colors::WHITE;
 
 		Settings.image = slLoadTexture("assets/jungle/PNG/menu/Setting.png");
-		Settings.TexturePosition = { 400 + 280, 375 };
+		Settings.TexturePosition = { 400 + 380, 375 };
 		Settings.SpriteW = 140;
 		Settings.SpriteH = 140;
 		Settings.Color = colors::WHITE;
 
 		Exit.image = slLoadTexture("assets/jungle/PNG/btn/close.png");
-		Exit.TexturePosition = { 400 + 60, 175 };
+		Exit.TexturePosition = { 400 + 160, 175 };
 		Exit.SpriteW = 140;
 		Exit.SpriteH = 140;
 		Exit.Color = colors::WHITE;
@@ -99,7 +101,7 @@ namespace menu
 		if (slGetMouseButton(SL_MOUSE_BUTTON_LEFT))
 			{
 				currentScreen = Screen::Game;
-			/*	game::InitGame(currentScreen);*/
+				game::InitGame(currentScreen);
 			}
 		}
 		else if (MouseMenuColision(mousePositionX, mousePositionY, Rules))
@@ -108,7 +110,7 @@ namespace menu
 
 			if (slGetMouseButton(SL_MOUSE_BUTTON_LEFT))
 			{
-				currentScreen = Screen::Rules;
+				currentScreen = Screen::LevelSelector;
 			}
 		}
 		else if (MouseMenuColision(mousePositionX, mousePositionY, Settings))

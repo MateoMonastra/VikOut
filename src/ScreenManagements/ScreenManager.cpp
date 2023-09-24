@@ -2,6 +2,7 @@
 #include "ScreenManagements/Screen.h"
 #include "ProyectUtilities/Utilities.h"
 #include "Scenes/Menu.h"
+#include "Scenes/Game.h"
 
 
 
@@ -23,7 +24,6 @@ namespace scenemanager
 		{
 			Update();
 			Draw();
-
 		}
 
 		slClose();	
@@ -32,7 +32,7 @@ namespace scenemanager
 	static void InitProgram()
 	{
 		int windowH = 950;
-		int windowW = 900;
+		int windowW = 1100;
 
 
 		slWindow(windowW, windowH, "VikOut", false);
@@ -53,9 +53,9 @@ namespace scenemanager
 			menu::MenuUpdate(currentScreen);
 			break;
 		case Screen::Game:
-
+			game::GameUpdate(currentScreen);
 			break;
-		case Screen::Rules:
+		case Screen::LevelSelector:
 
 			break;
 		case Screen::Settings:
@@ -80,7 +80,7 @@ namespace scenemanager
 			menu::MenuDrawing();
 			break;
 		case Screen::Game:
-
+			game::DrawGame(currentScreen);
 			break;
 		case Screen::Settings:
 			break;

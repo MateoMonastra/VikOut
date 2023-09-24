@@ -4,7 +4,7 @@ enum class Screen
 {
     Menu,
     Game, 
-    Rules,
+    LevelSelector,
     Settings,
     Exit
 };
