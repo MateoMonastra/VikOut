@@ -16,15 +16,6 @@ namespace game
 		Lose
 	};
 
-	enum class Levels
-	{
-		Level1,
-		Level2,
-		Level3,
-		Level4,
-		Level5
-	};
-
 	static GameState ShouldContinue();
 	static void LevelGenerator();
 	static bool CircleRect(Ball& ball, RecSprites& Rec);
@@ -59,14 +50,14 @@ namespace game
 	static RecSprites Pause_Leaf;
 	static RecSprites Close_Button;
 	static RecSprites Rects[REC_AMOUNT];
-	static Levels level;
+	static Levels Actuallevel;
 	static GameState state;
 
-	void InitGame()
+	void InitGame(Levels level)
 	{
 
 		state = GameState::Playing;
-		level = Levels::Level1;
+		Actuallevel = level;
 
 		initStatesSprites();
 
@@ -210,7 +201,7 @@ namespace game
 		}
 
 
-		if (level == Levels::Level1)
+		if (Actuallevel == Levels::Level1)
 		{
 			double RecXPosAux = 125;
 			double RecYPosAux = 850;
@@ -255,7 +246,7 @@ namespace game
 				RecYPosAux -= 55;
 			}
 		}
-		else if (level == Levels::Level2)
+		else if (Actuallevel == Levels::Level2)
 		{
 			double RecXPosAux = 125;
 			double RecYPosAux = 850;
@@ -308,7 +299,7 @@ namespace game
 				RecYPosAux -= 55;
 			}
 		}
-		else if (level == Levels::Level3)
+		else if (Actuallevel == Levels::Level3)
 		{
 			double RecXPosAux = 125;
 			double RecYPosAux = 850;
@@ -361,7 +352,7 @@ namespace game
 				RecYPosAux -= 55;
 			}
 		}
-		else if (level == Levels::Level4)
+		else if (Actuallevel == Levels::Level4)
 		{
 			double RecXPosAux = 125;
 			double RecYPosAux = 850;
@@ -414,7 +405,7 @@ namespace game
 				RecYPosAux -= 55;
 			}
 		}
-		else if (level == Levels::Level5)
+		else if (Actuallevel == Levels::Level5)
 		{
 			double RecXPosAux = 125;
 			double RecYPosAux = 850;
@@ -783,23 +774,23 @@ namespace game
 
 				if (slGetMouseButton(SL_MOUSE_BUTTON_LEFT))
 				{
-					if (level == Levels::Level1)
+					if (Actuallevel == Levels::Level1)
 					{
-						level = Levels::Level2;
+						Actuallevel = Levels::Level2;
 					}
-					else if (level == Levels::Level2)
+					else if (Actuallevel == Levels::Level2)
 					{
-						level = Levels::Level3;
+						Actuallevel = Levels::Level3;
 					}
-					else if (level == Levels::Level3)
+					else if (Actuallevel == Levels::Level3)
 					{
-						level = Levels::Level4;
+						Actuallevel = Levels::Level4;
 					}
-					else if (level == Levels::Level4)
+					else if (Actuallevel == Levels::Level4)
 					{
-						level = Levels::Level5;
+						Actuallevel = Levels::Level5;
 					}
-					else if (level == Levels::Level5)
+					else if (Actuallevel == Levels::Level5)
 					{
 						currentScreen = Screen::LevelSelector;
 					}

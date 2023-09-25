@@ -72,8 +72,6 @@ namespace scenemanager
 
 	static void Draw()
 	{
-
-
 		switch (currentScreen)
 		{
 		case Screen::Menu:
