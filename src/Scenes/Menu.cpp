@@ -64,7 +64,7 @@ namespace menu
 		Settings.SpriteH = 140;
 		Settings.Color = colors::WHITE;
 
-		Exit.image = slLoadTexture("assets/jungle/PNG/btn/close.png");
+		Exit.image = slLoadTexture("assets/jungle/PNG/buttons/close.png");
 		Exit.TexturePosition = { 400 + 160, 175 };
 		Exit.SpriteW = 140;
 		Exit.SpriteH = 140;

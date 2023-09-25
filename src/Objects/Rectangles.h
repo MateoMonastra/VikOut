@@ -10,6 +10,7 @@ struct RecSprites
 	int lives = {0};
 	bool havePowerUp = false;
 	bool isAlive = true;
+	bool isaRock = false;
 	int sprite = {0};
 	const float SPEED = 360;
 };

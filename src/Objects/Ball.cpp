@@ -15,6 +15,6 @@ void AddBallSpeed(Ball& ball)
 {
 	if (ball.speed <= ball.MAX_SPEED)
 	{
-		ball.speed += ball.SPEED_INCREMENT * slGetDeltaTime();
+		ball.speed += ball.SPEED_INCREMENT;
 	}
 }

@@ -30,6 +30,9 @@
     <ClCompile Include="..\src\Objects\Ball.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\ProyectUtilities\Utilities.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\ProyectUtilities\Utilities.h">

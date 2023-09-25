@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="..\src\Objects\Ball.cpp" />
+    <ClCompile Include="..\src\ProyectUtilities\Utilities.cpp" />
     <ClCompile Include="..\src\Scenes\Game.cpp" />
     <ClCompile Include="..\src\Scenes\Menu.cpp" />
     <ClCompile Include="..\src\ScreenManagements\ScreenManager.cpp" />

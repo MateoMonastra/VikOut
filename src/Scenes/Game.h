@@ -6,6 +6,7 @@
 namespace game
 {
 	void InitGame(Screen currentScreen);
+	void initStatesSprites();
 	void GameUpdate(Screen& currentScreen);
 	void PlayerInput();
 	void DrawGame(Screen currentScreen);
