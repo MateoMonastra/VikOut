@@ -3,7 +3,7 @@
 #include "ProyectUtilities/Utilities.h"
 #include "Scenes/Menu.h"
 #include "Scenes/Game.h"
-
+#include "Scenes/LevelSelector.h"
 
 
 
@@ -56,7 +56,7 @@ namespace scenemanager
 			game::GameUpdate(currentScreen);
 			break;
 		case Screen::LevelSelector:
-
+			levelSelector::LevelSelectorUpdate(currentScreen);
 			break;
 		case Screen::Settings:
 
@@ -82,6 +82,9 @@ namespace scenemanager
 		case Screen::Game:
 			game::DrawGame(currentScreen);
 			break;
+		case Screen::LevelSelector:
+			levelSelector::LevelSelectorDraw();
+				break;
 		case Screen::Settings:
 			break;
 		default:

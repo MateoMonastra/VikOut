@@ -48,7 +48,7 @@ namespace game
 	static RecSprites Win_1Star;
 	static RecSprites WoodBackGround;
 	static RecSprites PaperBackGround;
-	static RecSprites SkyBackGround;
+	static RecSprites BackGround2;
 	static RecSprites Lose_0Star;
 	static RecSprites Lose_Leaf;
 	static RecSprites Next_Button;
@@ -56,6 +56,8 @@ namespace game
 	static RecSprites Pause_Button;
 	static RecSprites Menu_Button;
 	static RecSprites Restart_Button;
+	static RecSprites Pause_Leaf;
+	static RecSprites Close_Button;
 	static RecSprites Rects[REC_AMOUNT];
 	static Levels level;
 	static GameState state;
@@ -63,7 +65,7 @@ namespace game
 	void InitGame()
 	{
 
-		state = GameState::ControlRules;
+		state = GameState::Playing;
 		level = Levels::Level1;
 
 		initStatesSprites();
@@ -109,11 +111,11 @@ namespace game
 		PaperBackGround.width = 660;
 		PaperBackGround.height = 600;
 
-		SkyBackGround.sprite = slLoadTexture("assets/jungle/PNG/you_win/SkyBackGround.png");
-		SkyBackGround.x = 550;
-		SkyBackGround.y = 375;
-		SkyBackGround.width = 1100;
-		SkyBackGround.height = 1150;
+		BackGround2.sprite = slLoadTexture("assets/jungle/PNG/pause/BackGround.png");
+		BackGround2.x = 550;
+		BackGround2.y = 375;
+		BackGround2.width = 1100;
+		BackGround2.height = 1150;
 
 		Lose_0Star.sprite = slLoadTexture("assets/jungle/PNG/you_lose/0star.png");
 		Lose_0Star.x = 550;
@@ -130,32 +132,46 @@ namespace game
 		Next_Button.sprite = slLoadTexture("assets/jungle/PNG/buttons/next.png");
 		Next_Button.x = 750;
 		Next_Button.y = 250;
-		Next_Button.width = 100;
-		Next_Button.height = 100;
+		Next_Button.width = 120;
+		Next_Button.height = 120;
 
 		Back_Button.sprite = slLoadTexture("assets/jungle/PNG/buttons/prew.png");
 		Back_Button.x = 600;
 		Back_Button.y = 90;
-		Back_Button.width = 100;
-		Back_Button.height = 100;
+		Back_Button.width = 120;
+		Back_Button.height = 120;
 
 		Pause_Button.sprite = slLoadTexture("assets/jungle/PNG/buttons/pause.png");
-		Pause_Button.x = 600;
-		Pause_Button.y = 90;
-		Pause_Button.width = 100;
-		Pause_Button.height = 100;
+		Pause_Button.x = 1050;
+		Pause_Button.y = 905;
+		Pause_Button.width = 80;
+		Pause_Button.height = 80;
 
 		Menu_Button.sprite = slLoadTexture("assets/jungle/PNG/buttons/menu.png");
-		Menu_Button.x = 350;
+		Menu_Button.x = 430;
 		Menu_Button.y = 250;
-		Menu_Button.width = 100;
-		Menu_Button.height = 100;
+		Menu_Button.width = 120;
+		Menu_Button.height = 120;
 
 		Restart_Button.sprite = slLoadTexture("assets/jungle/PNG/buttons/restart.png");
-		Restart_Button.x = 750;
+		Restart_Button.x = 680;
 		Restart_Button.y = 250;
-		Restart_Button.width = 100;
-		Restart_Button.height = 100;
+		Restart_Button.width = 120;
+		Restart_Button.height = 120;
+
+		Close_Button.sprite = slLoadTexture("assets/jungle/PNG/pause/close.png");
+		Close_Button.x = 240;
+		Close_Button.y = 680;
+		Close_Button.width = 120;
+		Close_Button.height = 120;
+
+		Pause_Leaf.sprite = slLoadTexture("assets/jungle/PNG/pause/leaf.png");
+		Pause_Leaf.x = 550;
+		Pause_Leaf.y = 730;
+		Pause_Leaf.width = 600;
+		Pause_Leaf.height = 220;
+
+		
 
 	}
 
@@ -463,8 +479,8 @@ namespace game
 
 			PlayerInput();
 
+			state = ShouldContinue();
 		}
-		state = ShouldContinue();
 
 	}
 
@@ -513,6 +529,9 @@ namespace game
 			slSetForeColor(ball.color.r, ball.color.g, ball.color.b, 1);
 			slSprite(ball.sprite, ball.x, ball.y, ball.width, ball.height);
 
+			slSetForeColor(Pause_Button.color.r, Pause_Button.color.g, Pause_Button.color.b, 1);
+			slSprite(Pause_Button.sprite, Pause_Button.x, Pause_Button.y, Pause_Button.width, Pause_Button.height);
+
 			/*slRectangleFill(ball.x, ball.y, ball.width, ball.height);
 
 			slRectangleFill(Player.x, Player.y, Player.width, Player.height);*/
@@ -520,8 +539,8 @@ namespace game
 		}
 		else if (state == GameState::Win)
 		{
-			slSetForeColor(SkyBackGround.color.r, SkyBackGround.color.g, SkyBackGround.color.b, 1);
-			slSprite(SkyBackGround.sprite, SkyBackGround.x, SkyBackGround.y, SkyBackGround.width, SkyBackGround.height);
+			slSetForeColor(BackGround2.color.r, BackGround2.color.g, BackGround2.color.b, 1);
+			slSprite(BackGround2.sprite, BackGround2.x, BackGround2.y, BackGround2.width, BackGround2.height);
 
 			slSetForeColor(WoodBackGround.color.r, WoodBackGround.color.g, WoodBackGround.color.b, 1);
 			slSprite(WoodBackGround.sprite, WoodBackGround.x, WoodBackGround.y, WoodBackGround.width, WoodBackGround.height);
@@ -555,8 +574,8 @@ namespace game
 		}
 		else if (state == GameState::Lose)
 		{
-			slSetForeColor(SkyBackGround.color.r, SkyBackGround.color.g, SkyBackGround.color.b, 1);
-			slSprite(SkyBackGround.sprite, SkyBackGround.x, SkyBackGround.y, SkyBackGround.width, SkyBackGround.height);
+			slSetForeColor(BackGround2.color.r, BackGround2.color.g, BackGround2.color.b, 1);
+			slSprite(BackGround2.sprite, BackGround2.x, BackGround2.y, BackGround2.width, BackGround2.height);
 
 			slSetForeColor(WoodBackGround.color.r, WoodBackGround.color.g, WoodBackGround.color.b, 1);
 			slSprite(WoodBackGround.sprite, WoodBackGround.x, WoodBackGround.y, WoodBackGround.width, WoodBackGround.height);
@@ -576,8 +595,30 @@ namespace game
 			slSetForeColor(Restart_Button.color.r, Restart_Button.color.g, Restart_Button.color.b, 1);
 			slSprite(Restart_Button.sprite, Restart_Button.x, Restart_Button.y, Restart_Button.width, Restart_Button.height);
 		}
+		else if (state == GameState::Paused)
+		{
+			slSetForeColor(BackGround2.color.r, BackGround2.color.g, BackGround2.color.b, 1);
+			slSprite(BackGround2.sprite, BackGround2.x, BackGround2.y, BackGround2.width, BackGround2.height);
 
+			slSetForeColor(WoodBackGround.color.r, WoodBackGround.color.g, WoodBackGround.color.b, 1);
+			slSprite(WoodBackGround.sprite, WoodBackGround.x, WoodBackGround.y, WoodBackGround.width, WoodBackGround.height);
 
+			slSetForeColor(PaperBackGround.color.r, PaperBackGround.color.g, PaperBackGround.color.b, 1);
+			slSprite(PaperBackGround.sprite, PaperBackGround.x, PaperBackGround.y, PaperBackGround.width, PaperBackGround.height);
+
+			slSetForeColor(Pause_Leaf.color.r, Pause_Leaf.color.g, Pause_Leaf.color.b, 1);
+			slSprite(Pause_Leaf.sprite, Pause_Leaf.x, Pause_Leaf.y, Pause_Leaf.width, Pause_Leaf.height);
+
+			slSetForeColor(Menu_Button.color.r, Menu_Button.color.g, Menu_Button.color.b, 1);
+			slSprite(Menu_Button.sprite, Menu_Button.x, Menu_Button.y, Menu_Button.width, Menu_Button.height);
+
+			slSetForeColor(Close_Button.color.r, Close_Button.color.g, Close_Button.color.b, 1);
+			slSprite(Close_Button.sprite, Close_Button.x, Close_Button.y, Close_Button.width, Close_Button.height);
+
+			slSetForeColor(Restart_Button.color.r, Restart_Button.color.g, Restart_Button.color.b, 1);
+			slSprite(Restart_Button.sprite, Restart_Button.x, Restart_Button.y, Restart_Button.width, Restart_Button.height);
+
+		}
 	}
 
 	bool CircleRect(Ball& ball, RecSprites& rec)
@@ -707,6 +748,19 @@ namespace game
 				}
 			}
 
+			Pause_Button.color = colors::WHITE;
+
+			if (MouseMenuColision(mousePositionX, mousePositionY, Pause_Button))
+			{
+				Pause_Button.color = colors::GRAY;
+
+				if (slGetMouseButton(SL_MOUSE_BUTTON_LEFT))
+				{
+					state = GameState::Paused;
+				}
+			}
+
+
 		}
 		else if (state == GameState::Win)
 		{
@@ -798,6 +852,49 @@ namespace game
 			}
 		
 		}
+		else if(state == GameState::Paused)
+		{
+			Close_Button.color = colors::WHITE;
+			Menu_Button.color = colors::WHITE;
+			Restart_Button.color = colors::WHITE;
+
+			if (MouseMenuColision(mousePositionX, mousePositionY, Close_Button))
+			{
+				Close_Button.color = colors::GRAY;
+
+				if (slGetMouseButton(SL_MOUSE_BUTTON_LEFT))
+				{
+					state = GameState::Playing;
+				}
+			}
+			else if (MouseMenuColision(mousePositionX, mousePositionY, Menu_Button))
+			{
+				Menu_Button.color = colors::GRAY;
+
+				if (slGetMouseButton(SL_MOUSE_BUTTON_LEFT))
+				{
+					state = GameState::ControlRules;
+					currentScreen = Screen::Menu;
+				}
+			}
+			else if (MouseMenuColision(mousePositionX, mousePositionY, Restart_Button))
+			{
+				Restart_Button.color = colors::GRAY;
+
+				if (slGetMouseButton(SL_MOUSE_BUTTON_LEFT))
+				{
+
+					for (int i = 0; i < REC_AMOUNT; i++)
+					{
+						Rects[i].isaRock = false;
+						Rects[i].isAlive = true;
+					}
+
+					state = GameState::Playing;
+					LevelGenerator();
+				}
+			}
+		}
 	}
 
 	bool PlayerColision()
@@ -860,8 +957,10 @@ namespace game
 
 	bool MouseMenuColision(float mousex, float mousey, RecSprites rec)
 	{
-		int bugCorrectionX = 60;
-		int bugCorrectionY = 55;
+		if (state == GameState::Playing)
+		{
+		int bugCorrectionX = 40;
+		int bugCorrectionY = 35;
 
 		if (mousex >= rec.x - bugCorrectionX &&
 			mousex <= rec.x - bugCorrectionX + rec.width &&
@@ -871,5 +970,22 @@ namespace game
 			return true;
 		}
 		return false;
+
+		}
+		else
+		{
+			int bugCorrectionX = 60;
+			int bugCorrectionY = 60;
+
+
+			if (mousex >= rec.x - bugCorrectionX &&
+				mousex <= rec.x - bugCorrectionX + rec.width &&
+				mousey >= rec.y - bugCorrectionY &&
+				mousey <= rec.y - bugCorrectionY + rec.height)
+			{
+				return true;
+			}
+			return false;
+		}
 	}
 }
