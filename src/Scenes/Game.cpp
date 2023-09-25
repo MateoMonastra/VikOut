@@ -31,11 +31,13 @@ namespace game
 	static GameState ShouldContinue();
 	static void LevelGenerator();
 	static bool CircleRect(Ball& ball, RecSprites& Rec);
-	static void CollisionCkeck();
+	static void CollisionCkeck(Screen& currentScreen);
 	static bool PlayerColision();
 	static bool RandomizeBool();
+	static void PlayerInput();
+	static void initStatesSprites();
+	static bool MouseMenuColision(float mousex, float mousey, RecSprites rec);
 
-	
 	static const int SCREEN_WIDTH = 1100;
 	static const int SCREEN_HEIGHT = 950;
 	static const int REC_AMOUNT = 42;
@@ -61,14 +63,14 @@ namespace game
 	static Levels level;
 	static GameState state;
 
-	void InitGame(Screen currentScreen)
+	void InitGame()
 	{
 
 		state = GameState::ControlRules;
-		level = Levels::Level5;
+		level = Levels::Level1;
 
 		initStatesSprites();
-		
+
 		LevelGenerator();
 	}
 
@@ -445,20 +447,19 @@ namespace game
 				RecXPosAux = 125;
 				RecYPosAux -= 55;
 			}
-			}
+		}
 	}
-	
 
 	void GameUpdate(Screen& currentScreen)
 	{
-		CollisionCkeck();
+		CollisionCkeck(currentScreen);
 
 		if (state == GameState::Playing)
 		{
-		BallMovement(ball);
+			BallMovement(ball);
 
-		PlayerInput();
-		
+			PlayerInput();
+
 		}
 		state = ShouldContinue();
 
@@ -486,14 +487,14 @@ namespace game
 		if (state == GameState::Playing)
 		{
 			double livesAuxX = 160;
-			
-		slSprite(BackGround.sprite, BackGround.x, BackGround.y, BackGround.width, BackGround.height);
+
+			slSprite(BackGround.sprite, BackGround.x, BackGround.y, BackGround.width, BackGround.height);
 
 			for (int i = 0; i < REC_AMOUNT; i++)
 			{
 				if (Rects[i].isAlive)
 				{
-				slSprite(Rects[i].sprite, Rects[i].x, Rects[i].y, Rects[i].width, Rects[i].height);
+					slSprite(Rects[i].sprite, Rects[i].x, Rects[i].y, Rects[i].width, Rects[i].height);
 				}
 			}
 			for (int i = 0; i < Player.lives; i++)
@@ -516,36 +517,36 @@ namespace game
 			slSprite(SkyBackGround.sprite, SkyBackGround.x, SkyBackGround.y, SkyBackGround.width, SkyBackGround.height);
 			slSprite(WoodBackGround.sprite, WoodBackGround.x, WoodBackGround.y, WoodBackGround.width, WoodBackGround.height);
 			slSprite(PaperBackGround.sprite, PaperBackGround.x, PaperBackGround.y, PaperBackGround.width, PaperBackGround.height);
-			if (Player.lives==3)
+			if (Player.lives == 3)
 			{
-			slSprite(Win_3Star.sprite, Win_3Star.x, Win_3Star.y, Win_3Star.width, Win_3Star.height);
+				slSprite(Win_3Star.sprite, Win_3Star.x, Win_3Star.y, Win_3Star.width, Win_3Star.height);
 			}
 			else if (Player.lives == 2)
 			{
-			slSprite(Win_2Star.sprite, Win_2Star.x, Win_2Star.y, Win_2Star.width, Win_2Star.height);
+				slSprite(Win_2Star.sprite, Win_2Star.x, Win_2Star.y, Win_2Star.width, Win_2Star.height);
 			}
 			else
 			{
-			slSprite(Win_1Star.sprite, Win_1Star.x, Win_1Star.y, Win_1Star.width, Win_1Star.height);
+				slSprite(Win_1Star.sprite, Win_1Star.x, Win_1Star.y, Win_1Star.width, Win_1Star.height);
 			}
 			slSprite(Win_Leaf.sprite, Win_Leaf.x, Win_Leaf.y, Win_Leaf.width, Win_Leaf.height);
 			slSprite(Next_Button.sprite, Next_Button.x, Next_Button.y, Next_Button.width, Next_Button.height);
 			slSprite(Menu_Button.sprite, Menu_Button.x, Menu_Button.y, Menu_Button.width, Menu_Button.height);
 		}
-		else if( state == GameState::Lose)
+		else if (state == GameState::Lose)
 		{
 			slSprite(SkyBackGround.sprite, SkyBackGround.x, SkyBackGround.y, SkyBackGround.width, SkyBackGround.height);
 			slSprite(WoodBackGround.sprite, WoodBackGround.x, WoodBackGround.y, WoodBackGround.width, WoodBackGround.height);
-			slSprite(PaperBackGround.sprite, PaperBackGround.x, PaperBackGround.y, PaperBackGround.width, PaperBackGround.height);			
+			slSprite(PaperBackGround.sprite, PaperBackGround.x, PaperBackGround.y, PaperBackGround.width, PaperBackGround.height);
 			slSprite(Lose_0Star.sprite, Lose_0Star.x, Lose_0Star.y, Lose_0Star.width, Lose_0Star.height);
 			slSprite(Lose_Leaf.sprite, Lose_Leaf.x, Lose_Leaf.y, Lose_Leaf.width, Lose_Leaf.height);
 			slSprite(Next_Button.sprite, Next_Button.x, Next_Button.y, Next_Button.width, Next_Button.height);
 			slSprite(Restart_Button.sprite, Restart_Button.x, Restart_Button.y, Restart_Button.width, Restart_Button.height);
 		}
-		
-		
-		}
-	
+
+
+	}
+
 	bool CircleRect(Ball& ball, RecSprites& rec)
 	{
 
@@ -580,7 +581,7 @@ namespace game
 
 
 		if (distance <= ball.radius)
-		{	
+		{
 			ball.directionY *= -1;
 			return true;
 		}
@@ -622,54 +623,103 @@ namespace game
 		return GameState::Playing;
 	}
 
-	void CollisionCkeck()
+	void CollisionCkeck(Screen& currentScreen)
 	{
-		if (ball.y < Player.y )
-		{
-			Player.lives--;
-			ball.y = 160;
-			ball.directionY *= -1;
-		}
+		int mousePositionX = slGetMouseX();
+		int mousePositionY = slGetMouseY();
 
-		if (ball.x > SCREEN_WIDTH - ball.radius)
+		if (state == GameState::Playing)
 		{
-			ball.directionX *= -1;
-			ball.x = SCREEN_WIDTH - ball.radius;
-		}
-		if (ball.x < ball.radius)
-		{
-			ball.directionX *= -1;
-			ball.x = ball.radius;
-		}
-		if (ball.y > SCREEN_HEIGHT - ball.radius)
-		{
-			ball.directionY *= -1;
-			ball.y = SCREEN_HEIGHT - ball.radius;
-		}
-
-		if (PlayerColision() && ball.y > Player.y + Player.height)
-		{
-		
-			ball.y += ball.radius/2;
-			AddBallSpeed(ball);
-		}
-
-		for (int i = 0; i < REC_AMOUNT; i++)
-		{
-			if(Rects[i].isAlive)
+			if (ball.y < Player.y)
 			{
-				if (CircleRect(ball, Rects[i]))
-				{
-					if (!Rects[i].isaRock)
-					{
-					Rects[i].lives -= 1;
-					}
-				}
-			
+				Player.lives--;
+				ball.y = 160;
+				ball.directionY *= -1;
 			}
+
+			if (ball.x > SCREEN_WIDTH - ball.radius)
+			{
+				ball.directionX *= -1;
+				ball.x = SCREEN_WIDTH - ball.radius;
+			}
+			if (ball.x < ball.radius)
+			{
+				ball.directionX *= -1;
+				ball.x = ball.radius;
+			}
+			if (ball.y > SCREEN_HEIGHT - ball.radius)
+			{
+				ball.directionY *= -1;
+				ball.y = SCREEN_HEIGHT - ball.radius;
+			}
+
+			if (PlayerColision() && ball.y > Player.y + Player.height)
+			{
+
+				ball.y += ball.radius / 2;
+				AddBallSpeed(ball);
+			}
+
+			for (int i = 0; i < REC_AMOUNT; i++)
+			{
+				if (Rects[i].isAlive)
+				{
+					if (CircleRect(ball, Rects[i]))
+					{
+						if (!Rects[i].isaRock)
+						{
+							Rects[i].lives -= 3;
+						}
+					}
+
+				}
+			}
+
 		}
+		else if (state == GameState::Win)
+		{
+			if (MouseMenuColision(mousePositionX, mousePositionY, Menu_Button))
+			{
+				if (slGetMouseButton(SL_MOUSE_BUTTON_LEFT))
+				{
+					currentScreen = Screen::Menu;
+				}
+			}
+			else if (MouseMenuColision(mousePositionX, mousePositionY, Next_Button))
+			{
+				if (slGetMouseButton(SL_MOUSE_BUTTON_LEFT))
+				{
+					if (level == Levels::Level1)
+					{
+					level = Levels::Level2;
+					}
+					else if(level == Levels::Level2)
+					{
+						level = Levels::Level3;
+					}
+					else if (level == Levels::Level3)
+					{
+						level = Levels::Level4;
+					}
+					else if (level == Levels::Level4)
+					{
+						level = Levels::Level5;
+					}
+					else if (level == Levels::Level5)
+					{
+						currentScreen = Screen::LevelSelector;
+					}
+	
+					
+					for (int i = 0; i < REC_AMOUNT; i++)
+					{
+						Rects[i].isAlive = true;
+					}
+					LevelGenerator();
+				}
+			}
 
-
+		}
 	}
 
 	bool PlayerColision()
@@ -710,7 +760,7 @@ namespace game
 
 			float maxAngle = 175.0f;
 			float minAngle = 5.0f;
-			
+
 			angle = Clampf(deg2rad(minAngle), deg2rad(maxAngle), angle);
 
 			ball.directionX = cosf(angle);
@@ -724,6 +774,21 @@ namespace game
 	bool RandomizeBool()
 	{
 		if (rand() % 2 == 1)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	bool MouseMenuColision(float mousex, float mousey, RecSprites rec)
+	{
+		int bugCorrectionX = 80;
+		int bugCorrectionY = 60;
+
+		if (mousex >= rec.x - bugCorrectionX &&
+			mousex <= rec.x - bugCorrectionX + rec.width &&
+			mousey >= rec.y - bugCorrectionY &&
+			mousey <= rec.y - bugCorrectionY + rec.height)
 		{
 			return true;
 		}

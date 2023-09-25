@@ -37,9 +37,7 @@ namespace menu
 		BackGround.SpriteW = 1100;
 		BackGround.SpriteH = 950;
 		BackGround.Color = colors::WHITE;
-		
-		
-		
+	
 		Title.image = slLoadTexture("assets/jungle/PNG/menu/Title.png");
 		Title.TexturePosition = { 800 /2 + 130 , 800 -120 };
 		Title.SpriteW = 900;
@@ -101,7 +99,7 @@ namespace menu
 		if (slGetMouseButton(SL_MOUSE_BUTTON_LEFT))
 			{
 				currentScreen = Screen::Game;
-				game::InitGame(currentScreen);
+				game::InitGame();
 			}
 		}
 		else if (MouseMenuColision(mousePositionX, mousePositionY, Rules))
