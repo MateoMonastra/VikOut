@@ -1,4 +1,5 @@
 #pragma once
+#include "ProyectUtilities/Colours.h"
 
 struct RecSprites
 {
@@ -12,6 +13,7 @@ struct RecSprites
 	bool isAlive = true;
 	bool isaRock = false;
 	int sprite = {0};
+	colors::Color color = colors::WHITE;
 	const float SPEED = 360;
 };
 

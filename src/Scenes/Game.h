@@ -1,6 +1,5 @@
 #pragma once
 
-#pragma once
 #include "ScreenManagements/Screen.h"
 
 namespace game

@@ -1,4 +1,5 @@
 #pragma once
+#include "ProyectUtilities/Colours.h"
 
 struct Ball
 {
@@ -14,6 +15,7 @@ struct Ball
     float directionX = 1;
     float directionY = 1;
     int sprite;
+    colors::Color color = colors::WHITE;
 };
 
 void BallMovement(Ball& ball);

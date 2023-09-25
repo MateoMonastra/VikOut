@@ -25,6 +25,7 @@
     <ClCompile Include="..\src\Scenes\Game.cpp" />
     <ClCompile Include="..\src\Scenes\Menu.cpp" />
     <ClCompile Include="..\src\ScreenManagements\ScreenManager.cpp" />
+    <ClCompile Include="Colours.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\Objects\Ball.h" />

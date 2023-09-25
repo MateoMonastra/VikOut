@@ -4,9 +4,6 @@
 #include "Objects/Rectangles.h"
 #include "Objects/Ball.h"
 
-
-
-
 namespace game
 {
 	enum class GameState
@@ -78,61 +75,61 @@ namespace game
 	{
 		Win_Leaf.sprite = slLoadTexture("assets/jungle/PNG/you_win/leaf.png");
 		Win_Leaf.x = 550;
-		Win_Leaf.y = 830;
+		Win_Leaf.y = 730;
 		Win_Leaf.width = 600;
 		Win_Leaf.height = 220;
 
 		Win_3Star.sprite = slLoadTexture("assets/jungle/PNG/you_win/3star.png");
 		Win_3Star.x = 550;
-		Win_3Star.y = 630;
+		Win_3Star.y = 530;
 		Win_3Star.width = 600;
 		Win_3Star.height = 220;
 
 		Win_2Star.sprite = slLoadTexture("assets/jungle/PNG/you_win/2star.png");
 		Win_2Star.x = 550;
-		Win_2Star.y = 630;
+		Win_2Star.y = 530;
 		Win_2Star.width = 600;
 		Win_2Star.height = 220;
 
 		Win_1Star.sprite = slLoadTexture("assets/jungle/PNG/you_win/1star.png");
 		Win_1Star.x = 550;
-		Win_1Star.y = 630;
+		Win_1Star.y = 530;
 		Win_1Star.width = 600;
 		Win_1Star.height = 220;
 
 		WoodBackGround.sprite = slLoadTexture("assets/jungle/PNG/you_win/WoodBackGround.png");
 		WoodBackGround.x = 550;
-		WoodBackGround.y = 520;
+		WoodBackGround.y = 420;
 		WoodBackGround.width = 760;
 		WoodBackGround.height = 700;
 
 		PaperBackGround.sprite = slLoadTexture("assets/jungle/PNG/you_win/PaperBackGround.png");
 		PaperBackGround.x = 550;
-		PaperBackGround.y = 520;
+		PaperBackGround.y = 420;
 		PaperBackGround.width = 660;
 		PaperBackGround.height = 600;
 
 		SkyBackGround.sprite = slLoadTexture("assets/jungle/PNG/you_win/SkyBackGround.png");
 		SkyBackGround.x = 550;
-		SkyBackGround.y = 475;
+		SkyBackGround.y = 375;
 		SkyBackGround.width = 1100;
-		SkyBackGround.height = 950;
+		SkyBackGround.height = 1150;
 
 		Lose_0Star.sprite = slLoadTexture("assets/jungle/PNG/you_lose/0star.png");
 		Lose_0Star.x = 550;
-		Lose_0Star.y = 630;
+		Lose_0Star.y = 530;
 		Lose_0Star.width = 600;
 		Lose_0Star.height = 220;
 
 		Lose_Leaf.sprite = slLoadTexture("assets/jungle/PNG/you_lose/leaf.png");
 		Lose_Leaf.x = 550;
-		Lose_Leaf.y = 830;
+		Lose_Leaf.y = 730;
 		Lose_Leaf.width = 600;
 		Lose_Leaf.height = 220;
 
 		Next_Button.sprite = slLoadTexture("assets/jungle/PNG/buttons/next.png");
 		Next_Button.x = 750;
-		Next_Button.y = 350;
+		Next_Button.y = 250;
 		Next_Button.width = 100;
 		Next_Button.height = 100;
 
@@ -150,13 +147,13 @@ namespace game
 
 		Menu_Button.sprite = slLoadTexture("assets/jungle/PNG/buttons/menu.png");
 		Menu_Button.x = 350;
-		Menu_Button.y = 350;
+		Menu_Button.y = 250;
 		Menu_Button.width = 100;
 		Menu_Button.height = 100;
 
 		Restart_Button.sprite = slLoadTexture("assets/jungle/PNG/buttons/restart.png");
-		Restart_Button.x = 350;
-		Restart_Button.y = 350;
+		Restart_Button.x = 750;
+		Restart_Button.y = 250;
 		Restart_Button.width = 100;
 		Restart_Button.height = 100;
 
@@ -189,6 +186,12 @@ namespace game
 		ball.height = 60;
 		ball.width = 60;
 		ball.radius = 30;
+
+		for (int i = 0; i < REC_AMOUNT; i++)
+		{
+			Rects[i].isaRock = false;
+			Rects[i].isAlive = true;
+		}
 
 
 		if (level == Levels::Level1)
@@ -487,24 +490,27 @@ namespace game
 		if (state == GameState::Playing)
 		{
 			double livesAuxX = 160;
-
+			slSetForeColor(BackGround.color.r, BackGround.color.g, BackGround.color.b, 1);
 			slSprite(BackGround.sprite, BackGround.x, BackGround.y, BackGround.width, BackGround.height);
 
 			for (int i = 0; i < REC_AMOUNT; i++)
 			{
 				if (Rects[i].isAlive)
 				{
+					slSetForeColor(Rects[i].color.r, Rects[i].color.g, Rects[i].color.b, 1);
 					slSprite(Rects[i].sprite, Rects[i].x, Rects[i].y, Rects[i].width, Rects[i].height);
 				}
 			}
 			for (int i = 0; i < Player.lives; i++)
 			{
+				slSetForeColor(PlayerLive.color.r, PlayerLive.color.g, PlayerLive.color.b, 1);
 				slSprite(PlayerLive.sprite, livesAuxX, PlayerLive.y, PlayerLive.width, PlayerLive.height);
 				livesAuxX += 35;
 			}
-
+			slSetForeColor(Player.color.r, Player.color.g, Player.color.b, 1);
 			slSprite(Player.sprite, Player.x, Player.y, Player.width, Player.height);
 
+			slSetForeColor(ball.color.r, ball.color.g, ball.color.b, 1);
 			slSprite(ball.sprite, ball.x, ball.y, ball.width, ball.height);
 
 			/*slRectangleFill(ball.x, ball.y, ball.width, ball.height);
@@ -514,33 +520,60 @@ namespace game
 		}
 		else if (state == GameState::Win)
 		{
+			slSetForeColor(SkyBackGround.color.r, SkyBackGround.color.g, SkyBackGround.color.b, 1);
 			slSprite(SkyBackGround.sprite, SkyBackGround.x, SkyBackGround.y, SkyBackGround.width, SkyBackGround.height);
+
+			slSetForeColor(WoodBackGround.color.r, WoodBackGround.color.g, WoodBackGround.color.b, 1);
 			slSprite(WoodBackGround.sprite, WoodBackGround.x, WoodBackGround.y, WoodBackGround.width, WoodBackGround.height);
+
+			slSetForeColor(PaperBackGround.color.r, PaperBackGround.color.g, PaperBackGround.color.b, 1);
 			slSprite(PaperBackGround.sprite, PaperBackGround.x, PaperBackGround.y, PaperBackGround.width, PaperBackGround.height);
+
 			if (Player.lives == 3)
 			{
+				slSetForeColor(Win_3Star.color.r, Win_3Star.color.g, Win_3Star.color.b, 1);
 				slSprite(Win_3Star.sprite, Win_3Star.x, Win_3Star.y, Win_3Star.width, Win_3Star.height);
 			}
 			else if (Player.lives == 2)
 			{
+				slSetForeColor(Win_2Star.color.r, Win_2Star.color.g, Win_2Star.color.b, 1);
 				slSprite(Win_2Star.sprite, Win_2Star.x, Win_2Star.y, Win_2Star.width, Win_2Star.height);
 			}
 			else
 			{
+				slSetForeColor(Win_1Star.color.r, Win_1Star.color.g, Win_1Star.color.b, 1);
 				slSprite(Win_1Star.sprite, Win_1Star.x, Win_1Star.y, Win_1Star.width, Win_1Star.height);
 			}
+			slSetForeColor(Win_Leaf.color.r, Win_Leaf.color.g, Win_Leaf.color.b, 1);
 			slSprite(Win_Leaf.sprite, Win_Leaf.x, Win_Leaf.y, Win_Leaf.width, Win_Leaf.height);
+
+			slSetForeColor(Next_Button.color.r, Next_Button.color.g, Next_Button.color.b, 1);
 			slSprite(Next_Button.sprite, Next_Button.x, Next_Button.y, Next_Button.width, Next_Button.height);
+
+			slSetForeColor(Menu_Button.color.r, Menu_Button.color.g, Menu_Button.color.b, 1);
 			slSprite(Menu_Button.sprite, Menu_Button.x, Menu_Button.y, Menu_Button.width, Menu_Button.height);
 		}
 		else if (state == GameState::Lose)
 		{
+			slSetForeColor(SkyBackGround.color.r, SkyBackGround.color.g, SkyBackGround.color.b, 1);
 			slSprite(SkyBackGround.sprite, SkyBackGround.x, SkyBackGround.y, SkyBackGround.width, SkyBackGround.height);
+
+			slSetForeColor(WoodBackGround.color.r, WoodBackGround.color.g, WoodBackGround.color.b, 1);
 			slSprite(WoodBackGround.sprite, WoodBackGround.x, WoodBackGround.y, WoodBackGround.width, WoodBackGround.height);
+
+			slSetForeColor(PaperBackGround.color.r, PaperBackGround.color.g, PaperBackGround.color.b, 1);
 			slSprite(PaperBackGround.sprite, PaperBackGround.x, PaperBackGround.y, PaperBackGround.width, PaperBackGround.height);
+
+			slSetForeColor(Lose_0Star.color.r, Lose_0Star.color.g, Lose_0Star.color.b, 1);
 			slSprite(Lose_0Star.sprite, Lose_0Star.x, Lose_0Star.y, Lose_0Star.width, Lose_0Star.height);
+
+			slSetForeColor(Lose_Leaf.color.r, Lose_Leaf.color.g, Lose_Leaf.color.b, 1);
 			slSprite(Lose_Leaf.sprite, Lose_Leaf.x, Lose_Leaf.y, Lose_Leaf.width, Lose_Leaf.height);
-			slSprite(Next_Button.sprite, Next_Button.x, Next_Button.y, Next_Button.width, Next_Button.height);
+
+			slSetForeColor(Menu_Button.color.r, Menu_Button.color.g, Menu_Button.color.b, 1);
+			slSprite(Menu_Button.sprite, Menu_Button.x, Menu_Button.y, Menu_Button.width, Menu_Button.height);
+
+			slSetForeColor(Restart_Button.color.r, Restart_Button.color.g, Restart_Button.color.b, 1);
 			slSprite(Restart_Button.sprite, Restart_Button.x, Restart_Button.y, Restart_Button.width, Restart_Button.height);
 		}
 
@@ -655,7 +688,6 @@ namespace game
 
 			if (PlayerColision() && ball.y > Player.y + Player.height)
 			{
-
 				ball.y += ball.radius / 2;
 				AddBallSpeed(ball);
 			}
@@ -678,22 +710,30 @@ namespace game
 		}
 		else if (state == GameState::Win)
 		{
+			Menu_Button.color = colors::WHITE;
+			Next_Button.color = colors::WHITE;
+
 			if (MouseMenuColision(mousePositionX, mousePositionY, Menu_Button))
 			{
+				Menu_Button.color = colors::GRAY;
+
 				if (slGetMouseButton(SL_MOUSE_BUTTON_LEFT))
 				{
+					state = GameState::ControlRules;
 					currentScreen = Screen::Menu;
 				}
 			}
 			else if (MouseMenuColision(mousePositionX, mousePositionY, Next_Button))
 			{
+				Next_Button.color = colors::GRAY;
+
 				if (slGetMouseButton(SL_MOUSE_BUTTON_LEFT))
 				{
 					if (level == Levels::Level1)
 					{
-					level = Levels::Level2;
+						level = Levels::Level2;
 					}
-					else if(level == Levels::Level2)
+					else if (level == Levels::Level2)
 					{
 						level = Levels::Level3;
 					}
@@ -709,16 +749,54 @@ namespace game
 					{
 						currentScreen = Screen::LevelSelector;
 					}
-	
-					
+
+
 					for (int i = 0; i < REC_AMOUNT; i++)
 					{
+						Rects[i].isaRock = false;
 						Rects[i].isAlive = true;
 					}
+
+					state = GameState::Playing;
 					LevelGenerator();
 				}
 			}
 
+		}
+		else if(state == GameState::Lose)
+		{
+			Menu_Button.color = colors::WHITE;
+			Restart_Button.color = colors::WHITE;
+
+			if (MouseMenuColision(mousePositionX, mousePositionY, Menu_Button))
+			{
+				Menu_Button.color = colors::GRAY;
+
+				if (slGetMouseButton(SL_MOUSE_BUTTON_LEFT))
+				{
+
+					state = GameState::ControlRules;
+					currentScreen = Screen::Menu;
+				}
+			}
+			else if (MouseMenuColision(mousePositionX, mousePositionY, Restart_Button))
+			{
+				Restart_Button.color = colors::GRAY;
+
+				if (slGetMouseButton(SL_MOUSE_BUTTON_LEFT))
+				{
+
+					for (int i = 0; i < REC_AMOUNT; i++)
+					{
+						Rects[i].isaRock = false;
+						Rects[i].isAlive = true;
+					}
+
+					state = GameState::Playing;
+					LevelGenerator();
+				}
+			}
+		
 		}
 	}
 
@@ -782,8 +860,8 @@ namespace game
 
 	bool MouseMenuColision(float mousex, float mousey, RecSprites rec)
 	{
-		int bugCorrectionX = 80;
-		int bugCorrectionY = 60;
+		int bugCorrectionX = 60;
+		int bugCorrectionY = 55;
 
 		if (mousex >= rec.x - bugCorrectionX &&
 			mousex <= rec.x - bugCorrectionX + rec.width &&
