@@ -22,7 +22,7 @@ namespace levelSelector
 		colors::Color color = colors::WHITE;
 	};
 
-	static bool MouseMenuColision(float mousex, float mousey, Button rec);
+	static bool MouseColision(float mousex, float mousey, Button rec);
 
 	Button Level1_Button;
 	Button Level2_Button;
@@ -33,7 +33,7 @@ namespace levelSelector
 	Button WoodBackGround;
 	Button PaperBackGround;
 	Button LevelSelector_Leaf;
-	Button Menu_Button;
+	Button Close_Button;
 	Levels Actuallevel;
 
 	void LevelSelectorInit()
@@ -90,11 +90,11 @@ namespace levelSelector
 		BackGround.SpriteW = 1100;
 		BackGround.SpriteH = 1150;
 
-		Menu_Button.sprite = slLoadTexture("assets/jungle/PNG/buttons/menu.png");
-		Menu_Button.TexturePosition.x = 550;
-		Menu_Button.TexturePosition.y = 150;
-		Menu_Button.SpriteW = 140;
-		Menu_Button.SpriteH = 140;
+		Close_Button.sprite = slLoadTexture("assets/jungle/PNG/pause/close.png");
+		Close_Button.TexturePosition.x = 240;
+		Close_Button.TexturePosition.y = 680;
+		Close_Button.SpriteW = 140;
+		Close_Button.SpriteH = 140;
 
 		LevelSelector_Leaf.sprite = slLoadTexture("assets/jungle/PNG/level_select/leaf.png");
 		LevelSelector_Leaf.TexturePosition.x = 550;
@@ -110,7 +110,7 @@ namespace levelSelector
 		int mousePositionY = slGetMouseY();
 
 
-		if (MouseMenuColision(mousePositionX, mousePositionY, Level1_Button))
+		if (MouseColision(mousePositionX, mousePositionY, Level1_Button))
 		{
 
 			Level1_Button.color = colors::GRAY;
@@ -122,7 +122,7 @@ namespace levelSelector
 				currentScreen = Screen::Game;
 			}
 		}
-		else if (MouseMenuColision(mousePositionX, mousePositionY, Level2_Button))
+		else if (MouseColision(mousePositionX, mousePositionY, Level2_Button))
 		{
 			Level2_Button.color = colors::GRAY;
 
@@ -133,7 +133,7 @@ namespace levelSelector
 				currentScreen = Screen::Game;
 			}
 		}
-		else if (MouseMenuColision(mousePositionX, mousePositionY, Level3_Button))
+		else if (MouseColision(mousePositionX, mousePositionY, Level3_Button))
 		{
 			Level3_Button.color = colors::GRAY;
 
@@ -144,7 +144,7 @@ namespace levelSelector
 				currentScreen = Screen::Game;
 			}
 		}
-		else if (MouseMenuColision(mousePositionX, mousePositionY, Level4_Button))
+		else if (MouseColision(mousePositionX, mousePositionY, Level4_Button))
 		{
 
 			Level4_Button.color = colors::GRAY;
@@ -156,7 +156,7 @@ namespace levelSelector
 				currentScreen = Screen::Game;
 			}
 		}
-		else if (MouseMenuColision(mousePositionX, mousePositionY, Level5_Button))
+		else if (MouseColision(mousePositionX, mousePositionY, Level5_Button))
 		{
 
 			Level5_Button.color = colors::GRAY;
@@ -168,10 +168,10 @@ namespace levelSelector
 				currentScreen = Screen::Game;
 			}
 		}
-		else if (MouseMenuColision(mousePositionX, mousePositionY, Menu_Button))
+		else if (MouseColision(mousePositionX, mousePositionY, Close_Button))
 		{
 
-			Menu_Button.color = colors::GRAY;
+			Close_Button.color = colors::GRAY;
 
 			if (slGetMouseButton(SL_MOUSE_BUTTON_LEFT))
 			{
@@ -185,7 +185,7 @@ namespace levelSelector
 			Level3_Button.color = colors::WHITE;
 			Level4_Button.color = colors::WHITE;
 			Level5_Button.color = colors::WHITE;
-			Menu_Button.color = colors::WHITE;
+			Close_Button.color = colors::WHITE;
 		}
 
 	}
@@ -219,12 +219,12 @@ namespace levelSelector
 		slSetForeColor(Level5_Button.color.r, Level5_Button.color.g, Level5_Button.color.b, 1);
 		slSprite(Level5_Button.sprite, Level5_Button.TexturePosition.x, Level5_Button.TexturePosition.y, Level5_Button.SpriteW, Level5_Button.SpriteH);
 
-		slSetForeColor(Menu_Button.color.r, Menu_Button.color.g, Menu_Button.color.b, 1);
-		slSprite(Menu_Button.sprite, Menu_Button.TexturePosition.x, Menu_Button.TexturePosition.y, Menu_Button.SpriteW, Menu_Button.SpriteH);
+		slSetForeColor(Close_Button.color.r, Close_Button.color.g, Close_Button.color.b, 1);
+		slSprite(Close_Button.sprite, Close_Button.TexturePosition.x, Close_Button.TexturePosition.y, Close_Button.SpriteW, Close_Button.SpriteH);
 
 	}
 	
-	bool MouseMenuColision(float mousex, float mousey, Button rec)
+	bool MouseColision(float mousex, float mousey, Button rec)
 	{
 		int bugCorrectionX = 80;
 		int bugCorrectionY = 60;

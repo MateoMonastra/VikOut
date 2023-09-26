@@ -33,7 +33,7 @@ namespace menu
 	static Button Exit;
 	static Levels Actuallevel;
 
-	static bool MouseMenuColision(float mousex, float mousey, Button rec);
+	static bool MouseColision(float mousex, float mousey, Button rec);
 
 	void InitMenu()
 	{
@@ -75,7 +75,7 @@ namespace menu
 
 	}
 
-	bool MouseMenuColision(float mousex, float mousey, Button rec)
+	bool MouseColision(float mousex, float mousey, Button rec)
 	{
 		int bugCorrectionX = 80;
 		int bugCorrectionY = 60;
@@ -96,7 +96,7 @@ namespace menu
 		int mousePositionY = slGetMouseY();
 
 
-		if (MouseMenuColision(mousePositionX, mousePositionY, Play))
+		if (MouseColision(mousePositionX, mousePositionY, Play))
 		{
 
 			Play.color = colors::GRAY;
@@ -108,7 +108,7 @@ namespace menu
 				currentScreen = Screen::Game;
 			}
 		}
-		else if (MouseMenuColision(mousePositionX, mousePositionY, Level_Selector))
+		else if (MouseColision(mousePositionX, mousePositionY, Level_Selector))
 		{
 			Level_Selector.color = colors::GRAY;
 
@@ -118,7 +118,7 @@ namespace menu
 				currentScreen = Screen::LevelSelector;
 			}
 		}
-		else if (MouseMenuColision(mousePositionX, mousePositionY, Settings))
+		else if (MouseColision(mousePositionX, mousePositionY, Settings))
 		{
 			Settings.color = colors::GRAY;
 
@@ -127,7 +127,7 @@ namespace menu
 				currentScreen = Screen::Settings;
 			}
 		}
-		else if (MouseMenuColision(mousePositionX, mousePositionY, Exit))
+		else if (MouseColision(mousePositionX, mousePositionY, Exit))
 		{
 
 			Exit.color = colors::GRAY;
