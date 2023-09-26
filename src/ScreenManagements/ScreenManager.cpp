@@ -1,5 +1,7 @@
 #include "ScreenManagements/ScreenManager.h"
+
 #include "ScreenManagements/Screen.h"
+#include "Scenes/Credits.h"
 #include "ProyectUtilities/Utilities.h"
 #include "Scenes/Menu.h"
 #include "Scenes/Game.h"
@@ -57,8 +59,8 @@ namespace scenemanager
 		case Screen::LevelSelector:
 			levelSelector::LevelSelectorUpdate(currentScreen);
 			break;
-		case Screen::Settings:
-
+		case Screen::Credits:
+			credits::CreditsUpdate(currentScreen);
 			break;
 		case Screen::Exit:
 			break;
@@ -81,7 +83,8 @@ namespace scenemanager
 		case Screen::LevelSelector:
 			levelSelector::LevelSelectorDraw();
 				break;
-		case Screen::Settings:
+		case Screen::Credits:
+			credits::CreditsDrawing();
 			break;
 		default:
 			break;

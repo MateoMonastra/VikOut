@@ -5,6 +5,6 @@ enum class Screen
     Menu,
     Game, 
     LevelSelector,
-    Settings,
+    Credits,
     Exit
 };

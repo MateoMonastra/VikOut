@@ -4,6 +4,7 @@
 #include "Scenes/Game.h"
 #include "ProyectUtilities/Colours.h"
 #include "Scenes/LevelSelector.h"
+#include "Scenes/Credits.h"
 
 using namespace levelSelector;
 using namespace game;
@@ -30,7 +31,7 @@ namespace menu
 	static Button Play;
 	static Button Level_Selector;
 	static Button Autor_Leaf;
-	static Button Settings;
+	static Button Credits;
 	static Button Exit;
 	static Levels Actuallevel;
 
@@ -61,10 +62,10 @@ namespace menu
 		Level_Selector.SpriteH = 140;
 
 
-		Settings.sprite = slLoadTexture("assets/jungle/PNG/menu/Setting.png");
-		Settings.TexturePosition = { 400 + 380, 375 };
-		Settings.SpriteW = 140;
-		Settings.SpriteH = 140;
+		Credits.sprite = slLoadTexture("assets/jungle/PNG/buttons/Credits.png");
+		Credits.TexturePosition = { 400 + 380, 375 };
+		Credits.SpriteW = 140;
+		Credits.SpriteH = 140;
 
 		Exit.sprite = slLoadTexture("assets/jungle/PNG/buttons/close.png");
 		Exit.TexturePosition = { 400 + 160, 175 };
@@ -121,13 +122,14 @@ namespace menu
 				currentScreen = Screen::LevelSelector;
 			}
 		}
-		else if (MouseColision(mousePositionX, mousePositionY, Settings))
+		else if (MouseColision(mousePositionX, mousePositionY, Credits))
 		{
-			Settings.color = colors::GRAY;
+			Credits.color = colors::GRAY;
 
 			if (slGetMouseButton(SL_MOUSE_BUTTON_LEFT))
 			{
-				currentScreen = Screen::Settings;
+				credits::InitCredits();
+				currentScreen = Screen::Credits;
 			}
 		}
 		else if (MouseColision(mousePositionX, mousePositionY, Exit))
@@ -146,7 +148,7 @@ namespace menu
 			Title.color = colors::WHITE;
 			Play.color = colors::WHITE;
 			Level_Selector.color = colors::WHITE;
-			Settings.color = colors::WHITE;
+			Credits.color = colors::WHITE;
 			Exit.color = colors::WHITE;
 		}
 
@@ -163,7 +165,7 @@ namespace menu
 
 		DrawSprite(Level_Selector);
 
-		DrawSprite(Settings);
+		DrawSprite(Credits);
 
 		DrawSprite(Exit);
 		

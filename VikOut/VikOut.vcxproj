@@ -24,6 +24,7 @@
     <ClCompile Include="..\src\Objects\PowerUp.cpp" />
     <ClCompile Include="..\src\ProyectUtilities\Colours.cpp" />
     <ClCompile Include="..\src\ProyectUtilities\Utilities.cpp" />
+    <ClCompile Include="..\src\Scenes\Credits.cpp" />
     <ClCompile Include="..\src\Scenes\Game.cpp" />
     <ClCompile Include="..\src\Scenes\LevelSelector.cpp" />
     <ClCompile Include="..\src\Scenes\Menu.cpp" />
@@ -35,6 +36,7 @@
     <ClInclude Include="..\src\Objects\Rectangles.h" />
     <ClInclude Include="..\src\ProyectUtilities\Colours.h" />
     <ClInclude Include="..\src\ProyectUtilities\Utilities.h" />
+    <ClInclude Include="..\src\Scenes\Credits.h" />
     <ClInclude Include="..\src\Scenes\Game.h" />
     <ClInclude Include="..\src\Scenes\LevelSelector.h" />
     <ClInclude Include="..\src\Scenes\Menu.h" />
