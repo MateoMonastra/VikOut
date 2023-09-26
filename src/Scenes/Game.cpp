@@ -20,20 +20,26 @@ namespace game
 	static void LevelGenerator();
 	static bool CircleRect(Ball& ball, RecSprites& Rec);
 	static void CollisionCkeck(Screen& currentScreen);
-	static bool PlayerColision();
+	static void PlayerColision(Ball& ball);
 	static bool RandomizeBool();
 	static void PlayerInput();
 	static void initStatesSprites();
 	static bool MouseColision(float mousex, float mousey, RecSprites rec);
 	static float RandomPullOut();
+	static void DrawSprite(RecSprites Sprite);
 
 	static const int SCREEN_WIDTH = 1100;
 	static const int SCREEN_HEIGHT = 950;
 	static const int REC_AMOUNT = 42;
+	static const int MAX_BALLS = 13;
+	static int actualBalls = 1;
+	static float timer = 0;
+	static const float TIME_FOR_FIRST_ANIMATION = 0.18f;
+	static const float TIME_FOR_SECOND_ANIMATION = 0.5f;
+	static Ball ball[MAX_BALLS];
 	static RecSprites Player;
 	static RecSprites PlayerLive;
 	static RecSprites PlayerPoints;
-	static Ball ball;
 	static RecSprites BackGround;
 	static RecSprites Win_Leaf;
 	static RecSprites Win_3Star;
@@ -50,11 +56,12 @@ namespace game
 	static RecSprites Menu_Button;
 	static RecSprites Play_Button;
 	static RecSprites Restart_Button;
-	static RecSprites Pause_Leaf;
 	static RecSprites Close_Button;
+	static RecSprites Pause_Leaf;
 	static RecSprites Control_Rules;
 	static RecSprites PowerUp_Rules;
 	static RecSprites Rules_Leaf;
+	static RecSprites Lives_Board;
 	static RecSprites Rects[REC_AMOUNT];
 	static Levels Actuallevel;
 	static GameState state;
@@ -74,162 +81,173 @@ namespace game
 
 	void initStatesSprites()
 	{
-		Win_Leaf.sprite = slLoadTexture("assets/jungle/PNG/you_win/leaf.png");
+		Win_Leaf.sprite[0] = slLoadTexture("assets/jungle/PNG/you_win/leaf.png");
 		Win_Leaf.x = 550;
 		Win_Leaf.y = 730;
 		Win_Leaf.width = 600;
 		Win_Leaf.height = 220;
 
-		Win_3Star.sprite = slLoadTexture("assets/jungle/PNG/you_win/3star.png");
+		Win_3Star.sprite[0] = slLoadTexture("assets/jungle/PNG/you_win/3star.png");
 		Win_3Star.x = 550;
 		Win_3Star.y = 530;
 		Win_3Star.width = 600;
 		Win_3Star.height = 220;
 
-		Win_2Star.sprite = slLoadTexture("assets/jungle/PNG/you_win/2star.png");
+		Win_2Star.sprite[0] = slLoadTexture("assets/jungle/PNG/you_win/2star.png");
 		Win_2Star.x = 550;
 		Win_2Star.y = 530;
 		Win_2Star.width = 600;
 		Win_2Star.height = 220;
 
-		Win_1Star.sprite = slLoadTexture("assets/jungle/PNG/you_win/1star.png");
+		Win_1Star.sprite[0] = slLoadTexture("assets/jungle/PNG/you_win/1star.png");
 		Win_1Star.x = 550;
 		Win_1Star.y = 530;
 		Win_1Star.width = 600;
 		Win_1Star.height = 220;
 
-		WoodBackGround.sprite = slLoadTexture("assets/jungle/PNG/you_win/WoodBackGround.png");
+		WoodBackGround.sprite[0] = slLoadTexture("assets/jungle/PNG/you_win/WoodBackGround.png");
 		WoodBackGround.x = 550;
 		WoodBackGround.y = 420;
 		WoodBackGround.width = 760;
 		WoodBackGround.height = 700;
 
-		PaperBackGround.sprite = slLoadTexture("assets/jungle/PNG/you_win/PaperBackGround.png");
+		PaperBackGround.sprite[0] = slLoadTexture("assets/jungle/PNG/you_win/PaperBackGround.png");
 		PaperBackGround.x = 550;
 		PaperBackGround.y = 420;
 		PaperBackGround.width = 660;
 		PaperBackGround.height = 600;
 
-		BackGround2.sprite = slLoadTexture("assets/jungle/PNG/pause/BackGround.png");
+		BackGround2.sprite[0] = slLoadTexture("assets/jungle/PNG/pause/BackGround.png");
 		BackGround2.x = 550;
 		BackGround2.y = 375;
 		BackGround2.width = 1100;
 		BackGround2.height = 1150;
 
-		Lose_0Star.sprite = slLoadTexture("assets/jungle/PNG/you_lose/0star.png");
+		Lose_0Star.sprite[0] = slLoadTexture("assets/jungle/PNG/you_lose/0star.png");
 		Lose_0Star.x = 550;
 		Lose_0Star.y = 530;
 		Lose_0Star.width = 600;
 		Lose_0Star.height = 220;
 
-		Lose_Leaf.sprite = slLoadTexture("assets/jungle/PNG/you_lose/leaf.png");
+		Lose_Leaf.sprite[0] = slLoadTexture("assets/jungle/PNG/you_lose/leaf.png");
 		Lose_Leaf.x = 550;
 		Lose_Leaf.y = 730;
 		Lose_Leaf.width = 600;
 		Lose_Leaf.height = 220;
 
-		Next_Button.sprite = slLoadTexture("assets/jungle/PNG/buttons/next.png");
+		Next_Button.sprite[0] = slLoadTexture("assets/jungle/PNG/buttons/next.png");
 		Next_Button.x = 750;
 		Next_Button.y = 250;
 		Next_Button.width = 120;
 		Next_Button.height = 120;
 
-		Back_Button.sprite = slLoadTexture("assets/jungle/PNG/buttons/prew.png");
+		Back_Button.sprite[0] = slLoadTexture("assets/jungle/PNG/buttons/prew.png");
 		Back_Button.x = 350;
 		Back_Button.y = 250;
 		Back_Button.width = 120;
 		Back_Button.height = 120;
 
-		Pause_Button.sprite = slLoadTexture("assets/jungle/PNG/buttons/pause.png");
+		Pause_Button.sprite[0] = slLoadTexture("assets/jungle/PNG/buttons/pause.png");
 		Pause_Button.x = 1050;
 		Pause_Button.y = 905;
 		Pause_Button.width = 80;
 		Pause_Button.height = 80;
 
-		Menu_Button.sprite = slLoadTexture("assets/jungle/PNG/buttons/menu.png");
+		Menu_Button.sprite[0] = slLoadTexture("assets/jungle/PNG/buttons/menu.png");
 		Menu_Button.x = 430;
 		Menu_Button.y = 250;
 		Menu_Button.width = 120;
 		Menu_Button.height = 120;
 		
-		Play_Button.sprite = slLoadTexture("assets/jungle/PNG/buttons/play.png");
+		Play_Button.sprite[0] = slLoadTexture("assets/jungle/PNG/buttons/play.png");
 		Play_Button.x = 550;
 		Play_Button.y = 250;
 		Play_Button.width = 120;
 		Play_Button.height = 120;
 
-		Restart_Button.sprite = slLoadTexture("assets/jungle/PNG/buttons/restart.png");
+		Restart_Button.sprite[0] = slLoadTexture("assets/jungle/PNG/buttons/restart.png");
 		Restart_Button.x = 680;
 		Restart_Button.y = 250;
 		Restart_Button.width = 120;
 		Restart_Button.height = 120;
 
-		Close_Button.sprite = slLoadTexture("assets/jungle/PNG/pause/close.png");
+		Close_Button.sprite[0] = slLoadTexture("assets/jungle/PNG/pause/close.png");
 		Close_Button.x = 240;
 		Close_Button.y = 680;
 		Close_Button.width = 120;
 		Close_Button.height = 120;
 
-		Pause_Leaf.sprite = slLoadTexture("assets/jungle/PNG/pause/leaf.png");
+		Pause_Leaf.sprite[0] = slLoadTexture("assets/jungle/PNG/pause/leaf.png");
 		Pause_Leaf.x = 550;
 		Pause_Leaf.y = 730;
 		Pause_Leaf.width = 600;
 		Pause_Leaf.height = 220;
 
-		PlayerPoints.sprite = slLoadTexture("assets/jungle/PNG/buttons/pause.png");
+		PlayerPoints.sprite[0] = slLoadTexture("assets/jungle/PNG/buttons/pause.png");
 		PlayerPoints.x = 1050;
 		PlayerPoints.y = 905;
 		PlayerPoints.width = 80;
 		PlayerPoints.height = 80;
 
-		Control_Rules.sprite = slLoadTexture("assets/jungle/PNG/rules/ControlRules.png");
+		Control_Rules.sprite[0] = slLoadTexture("assets/jungle/PNG/rules/ControlRules.png");
 		Control_Rules.x = 550;
 		Control_Rules.y = 420;
 		Control_Rules.width = 660;
 		Control_Rules.height = 600;
 
-		PowerUp_Rules.sprite = slLoadTexture("assets/jungle/PNG/rules/PowerUpRules.png");
+		PowerUp_Rules.sprite[0] = slLoadTexture("assets/jungle/PNG/rules/PowerUpRules.png");
 		PowerUp_Rules.x = 550;
 		PowerUp_Rules.y = 420;
 		PowerUp_Rules.width = 660;
 		PowerUp_Rules.height = 600;
 
-		Rules_Leaf.sprite = slLoadTexture("assets/jungle/PNG/rules/leaf.png");
+		Rules_Leaf.sprite[0] = slLoadTexture("assets/jungle/PNG/rules/leaf.png");
 		Rules_Leaf.x = 550;
 		Rules_Leaf.y = 730;
 		Rules_Leaf.width = 600;
 		Rules_Leaf.height = 220;
 
+		Lives_Board.sprite[0] = slLoadTexture("assets/jungle/PNG/game_sprites/LivesBoard.png");
+		Lives_Board.x = 150;
+		Lives_Board.y = 910;
+		Lives_Board.width = 280;
+		Lives_Board.height = 80;
+
 	}
 
 	void LevelGenerator()
 	{
-		Player.sprite = slLoadTexture("assets/jungle/PNG/game_sprites/Pad.png");
+		Player.sprite[0] = slLoadTexture("assets/jungle/PNG/game_sprites/Rest.png");
+		Player.sprite[1] = slLoadTexture("assets/jungle/PNG/game_sprites/Hold.png");
+		Player.sprite[2] = slLoadTexture("assets/jungle/PNG/game_sprites/Release.png");
 		Player.x = 600;
 		Player.y = 90;
 		Player.width = 260;
-		Player.height = 50;
+		Player.height = 30;
 		Player.lives = 3;
 
-		PlayerLive.sprite = slLoadTexture("assets/jungle/PNG/game_sprites/heart.png");
+		PlayerLive.sprite[0] = slLoadTexture("assets/jungle/PNG/game_sprites/heart.png");
 		PlayerLive.x = 160;
-		PlayerLive.y = 920;
-		PlayerLive.width = 45;
-		PlayerLive.height = 45;
+		PlayerLive.y = 910;
+		PlayerLive.width = 65;
+		PlayerLive.height = 65;
 
-		BackGround.sprite = slLoadTexture("assets/jungle/PNG/game_sprites/BackGround2.png");
+		BackGround.sprite[0] = slLoadTexture("assets/jungle/PNG/game_sprites/BackGround2.png");
 		BackGround.x = 550;
 		BackGround.y = 475;
 		BackGround.width = 1100;
 		BackGround.height = 950;
 
-		ball.sprite = slLoadTexture("assets/jungle/PNG/game_sprites/ball.png");
-		ball.x = 600;
-		ball.y = 160;
-		ball.height = 40;
-		ball.width = 40;
-		ball.radius = 20;
-		ball.directionX = RandomPullOut();
+		for (int i = 0; i < MAX_BALLS; i++)
+		{
+		ball[i].sprite = slLoadTexture("assets/jungle/PNG/game_sprites/ball.png");
+		ball[i].x = 600;
+		ball[i].y = 160;
+		ball[i].height = 50;
+		ball[i].width = 50;
+		ball[i].radius = 25;
+		ball[i].directionX = RandomPullOut();
+		}
 
 		for (int i = 0; i < REC_AMOUNT; i++)
 		{
@@ -237,11 +255,16 @@ namespace game
 			Rects[i].isAlive = true;
 		}
 
+		int brick0 = slLoadTexture("assets/jungle/PNG/game_sprites/Rec3.png");
+		int brick1 = slLoadTexture("assets/jungle/PNG/game_sprites/Rec2.png");
+		int brick2 = slLoadTexture("assets/jungle/PNG/game_sprites/Rec.png");
+		int brickRock = slLoadTexture("assets/jungle/PNG/game_sprites/Rec4.png");
+
 
 		if (Actuallevel == Levels::Level1)
 		{
 			double RecXPosAux = 125;
-			double RecYPosAux = 850;
+			double RecYPosAux = 830;
 			int Layers = 6;
 			int RecsPerLine = 7;
 			int iterator = 0;
@@ -257,18 +280,21 @@ namespace game
 					Rects[iterator].width = 140;
 					Rects[iterator].height = 50;
 					Rects[iterator].lives = livesForRec;
+					Rects[iterator].sprite[2] = brick2;
+					Rects[iterator].sprite[1] = brick1;
+					Rects[iterator].sprite[0] = brick0;
 
 					if (Rects[iterator].lives == 3)
 					{
-						Rects[iterator].sprite = slLoadTexture("assets/jungle/PNG/game_sprites/Rec3.png");
+						Rects[iterator].currentSprite = 2;
 					}
 					else if (Rects[iterator].lives == 2)
 					{
-						Rects[iterator].sprite = slLoadTexture("assets/jungle/PNG/game_sprites/Rec2.png");
+						Rects[iterator].currentSprite = 1;
 					}
 					else
 					{
-						Rects[iterator].sprite = slLoadTexture("assets/jungle/PNG/game_sprites/Rec.png");
+						Rects[iterator].currentSprite = 0;
 					}
 					RecXPosAux += 145;
 					iterator++;
@@ -286,7 +312,7 @@ namespace game
 		else if (Actuallevel == Levels::Level2)
 		{
 			double RecXPosAux = 125;
-			double RecYPosAux = 850;
+			double RecYPosAux = 830;
 			const int Layers = 6;
 			int RecsPerLine = 7;
 			int iterator = 0;
@@ -305,22 +331,22 @@ namespace game
 
 					if (index == Layers - 1 && j != 2 && j != 3 && j != 4)
 					{
-						Rects[iterator].sprite = slLoadTexture("assets/jungle/PNG/game_sprites/Rec4.png");
+						Rects[iterator].sprite[Rects[iterator].currentSprite] = brickRock;
 						Rects[iterator].isaRock = true;
 					}
 					else
 					{
 						if (Rects[iterator].lives == 3)
 						{
-							Rects[iterator].sprite = slLoadTexture("assets/jungle/PNG/game_sprites/Rec3.png");
+							Rects[iterator].sprite[Rects[iterator].currentSprite] = slLoadTexture("assets/jungle/PNG/game_sprites/Rec3.png");
 						}
 						else if (Rects[iterator].lives == 2)
 						{
-							Rects[iterator].sprite = slLoadTexture("assets/jungle/PNG/game_sprites/Rec2.png");
+							Rects[iterator].sprite[Rects[iterator].currentSprite] = slLoadTexture("assets/jungle/PNG/game_sprites/Rec2.png");
 						}
 						else
 						{
-							Rects[iterator].sprite = slLoadTexture("assets/jungle/PNG/game_sprites/Rec.png");
+							Rects[iterator].sprite[Rects[iterator].currentSprite] = slLoadTexture("assets/jungle/PNG/game_sprites/Rec.png");
 						}
 					}
 					RecXPosAux += 145;
@@ -339,7 +365,7 @@ namespace game
 		else if (Actuallevel == Levels::Level3)
 		{
 			double RecXPosAux = 125;
-			double RecYPosAux = 850;
+			double RecYPosAux = 830;
 			const int Layers = 6;
 			int RecsPerLine = 7;
 			int iterator = 0;
@@ -358,22 +384,22 @@ namespace game
 
 					if (index == Layers - 3 && j != 0 && j != 6)
 					{
-						Rects[iterator].sprite = slLoadTexture("assets/jungle/PNG/game_sprites/Rec4.png");
+						Rects[iterator].sprite[Rects[iterator].currentSprite] = slLoadTexture("assets/jungle/PNG/game_sprites/Rec4.png");
 						Rects[iterator].isaRock = true;
 					}
 					else
 					{
 						if (Rects[iterator].lives == 3)
 						{
-							Rects[iterator].sprite = slLoadTexture("assets/jungle/PNG/game_sprites/Rec3.png");
+							Rects[iterator].sprite[Rects[iterator].currentSprite] = slLoadTexture("assets/jungle/PNG/game_sprites/Rec3.png");
 						}
 						else if (Rects[iterator].lives == 2)
 						{
-							Rects[iterator].sprite = slLoadTexture("assets/jungle/PNG/game_sprites/Rec2.png");
+							Rects[iterator].sprite[Rects[iterator].currentSprite] = slLoadTexture("assets/jungle/PNG/game_sprites/Rec2.png");
 						}
 						else
 						{
-							Rects[iterator].sprite = slLoadTexture("assets/jungle/PNG/game_sprites/Rec.png");
+							Rects[iterator].sprite[Rects[iterator].currentSprite] = slLoadTexture("assets/jungle/PNG/game_sprites/Rec.png");
 						}
 					}
 					RecXPosAux += 145;
@@ -392,7 +418,7 @@ namespace game
 		else if (Actuallevel == Levels::Level4)
 		{
 			double RecXPosAux = 125;
-			double RecYPosAux = 850;
+			double RecYPosAux = 830;
 			const int Layers = 6;
 			int RecsPerLine = 7;
 			int iterator = 0;
@@ -411,22 +437,22 @@ namespace game
 
 					if ((index == 0) || (index == Layers - 1) && (j != 3))
 					{
-						Rects[iterator].sprite = slLoadTexture("assets/jungle/PNG/game_sprites/Rec4.png");
+						Rects[iterator].sprite[Rects[iterator].currentSprite] = slLoadTexture("assets/jungle/PNG/game_sprites/Rec4.png");
 						Rects[iterator].isaRock = true;
 					}
 					else
 					{
 						if (Rects[iterator].lives == 3)
 						{
-							Rects[iterator].sprite = slLoadTexture("assets/jungle/PNG/game_sprites/Rec3.png");
+							Rects[iterator].sprite[Rects[iterator].currentSprite] = slLoadTexture("assets/jungle/PNG/game_sprites/Rec3.png");
 						}
 						else if (Rects[iterator].lives == 2)
 						{
-							Rects[iterator].sprite = slLoadTexture("assets/jungle/PNG/game_sprites/Rec2.png");
+							Rects[iterator].sprite[Rects[iterator].currentSprite] = slLoadTexture("assets/jungle/PNG/game_sprites/Rec2.png");
 						}
 						else
 						{
-							Rects[iterator].sprite = slLoadTexture("assets/jungle/PNG/game_sprites/Rec.png");
+							Rects[iterator].sprite[Rects[iterator].currentSprite] = slLoadTexture("assets/jungle/PNG/game_sprites/Rec.png");
 						}
 					}
 					RecXPosAux += 145;
@@ -445,7 +471,7 @@ namespace game
 		else if (Actuallevel == Levels::Level5)
 		{
 			double RecXPosAux = 125;
-			double RecYPosAux = 850;
+			double RecYPosAux = 830;
 			const int Layers = 6;
 			int RecsPerLine = 7;
 			int iterator = 0;
@@ -464,22 +490,22 @@ namespace game
 
 					if ((index==0) || (index==1 && j==0 || j == 3 || j == 6) ||(index == 2 && j == 0 || j == 6) || (index == 3 && j == 0 || j == 3 || j == 6) || (index == 4 && j == 0 || j == 6) || (index == 5 && j == 0 || j == 3 || j == 6))
 					{
-						Rects[iterator].sprite = slLoadTexture("assets/jungle/PNG/game_sprites/Rec4.png");
+						Rects[iterator].sprite[Rects[iterator].currentSprite] = slLoadTexture("assets/jungle/PNG/game_sprites/Rec4.png");
 						Rects[iterator].isaRock = true;
 					}
 					else
 					{
 						if (Rects[iterator].lives == 3)
 						{
-							Rects[iterator].sprite = slLoadTexture("assets/jungle/PNG/game_sprites/Rec3.png");
+							Rects[iterator].sprite[Rects[iterator].currentSprite] = slLoadTexture("assets/jungle/PNG/game_sprites/Rec3.png");
 						}
 						else if (Rects[iterator].lives == 2)
 						{
-							Rects[iterator].sprite = slLoadTexture("assets/jungle/PNG/game_sprites/Rec2.png");
+							Rects[iterator].sprite[Rects[iterator].currentSprite] = slLoadTexture("assets/jungle/PNG/game_sprites/Rec2.png");
 						}
 						else
 						{
-							Rects[iterator].sprite = slLoadTexture("assets/jungle/PNG/game_sprites/Rec.png");
+							Rects[iterator].sprite[Rects[iterator].currentSprite] = slLoadTexture("assets/jungle/PNG/game_sprites/Rec.png");
 						}
 					}
 					RecXPosAux += 145;
@@ -503,9 +529,28 @@ namespace game
 
 		if (state == GameState::Playing)
 		{
-			BallMovement(ball);
+			for (int i = 0; i < actualBalls; i++)
+			{
+			BallMovement(ball[i]);
+			}
 
 			PlayerInput();
+			if (Player.currentSprite != 0 )
+			{
+				timer += slGetDeltaTime();
+				if (timer > TIME_FOR_SECOND_ANIMATION)
+				{
+					Player.currentSprite = 0;
+				}
+				else if (timer > TIME_FOR_FIRST_ANIMATION)
+				{
+					Player.currentSprite = 2;
+				}
+			}
+			else 
+			{
+				timer = 0;
+			}
 
 			state = ShouldContinue();
 		}
@@ -534,158 +579,132 @@ namespace game
 		if (state == GameState::Playing)
 		{
 			double livesAuxX = 160;
-			slSetForeColor(BackGround.color.r, BackGround.color.g, BackGround.color.b, 1);
-			slSprite(BackGround.sprite, BackGround.x, BackGround.y, BackGround.width, BackGround.height);
 
+			DrawSprite(BackGround);
 			for (int i = 0; i < REC_AMOUNT; i++)
 			{
 				if (Rects[i].isAlive)
 				{
-					slSetForeColor(Rects[i].color.r, Rects[i].color.g, Rects[i].color.b, 1);
-					slSprite(Rects[i].sprite, Rects[i].x, Rects[i].y, Rects[i].width, Rects[i].height);
+					DrawSprite(Rects[i]);
 					/*slRectangleFill(Rects[i].x, Rects[i].y, Rects[i].width, Rects[i].height);*/
 				}
 			}
+			slSetForeColor(Player.color.r, Player.color.g, Player.color.b, 1);
+			slSprite(Player.sprite[Player.currentSprite], Player.x, Player.y, Player.width + 60, Player.height * 8);
+
+			for (int i = 0; i < actualBalls; i++)
+			{
+			slSetForeColor(ball[i].color.r, ball[i].color.g, ball[i].color.b, 1);
+			slSprite(ball[i].sprite, ball[i].x, ball[i].y, ball[i].width, ball[i].height);
+			}
+			
+			DrawSprite(Lives_Board);
+
+			DrawSprite(Pause_Button);
+
 			for (int i = 0; i < Player.lives; i++)
 			{
 				slSetForeColor(PlayerLive.color.r, PlayerLive.color.g, PlayerLive.color.b, 1);
-				slSprite(PlayerLive.sprite, livesAuxX, PlayerLive.y, PlayerLive.width, PlayerLive.height);
+				slSprite(PlayerLive.sprite[PlayerLive.currentSprite], livesAuxX, PlayerLive.y, PlayerLive.width, PlayerLive.height);
 				livesAuxX += 35;
 			}
-			slSetForeColor(Player.color.r, Player.color.g, Player.color.b, 1);
-			slSprite(Player.sprite, Player.x, Player.y, Player.width, Player.height);
+			/*slRectangleFill(ball.x, ball.y, ball.width, ball.height);
 
-			slSetForeColor(ball.color.r, ball.color.g, ball.color.b, 1);
-			slSprite(ball.sprite, ball.x, ball.y, ball.width, ball.height);
-
-			slSetForeColor(Pause_Button.color.r, Pause_Button.color.g, Pause_Button.color.b, 1);
-			slSprite(Pause_Button.sprite, Pause_Button.x, Pause_Button.y, Pause_Button.width, Pause_Button.height);
-
-			slRectangleFill(ball.x, ball.y, ball.width, ball.height);
-
-			slRectangleFill(Player.x, Player.y, Player.width, Player.height);
-
+			slRectangleFill(Player.x, Player.y, Player.width, Player.height);*/
 		}
 		else if (state == GameState::Win)
 		{
-			slSetForeColor(BackGround2.color.r, BackGround2.color.g, BackGround2.color.b, 1);
-			slSprite(BackGround2.sprite, BackGround2.x, BackGround2.y, BackGround2.width, BackGround2.height);
+			DrawSprite(BackGround2);
 
-			slSetForeColor(WoodBackGround.color.r, WoodBackGround.color.g, WoodBackGround.color.b, 1);
-			slSprite(WoodBackGround.sprite, WoodBackGround.x, WoodBackGround.y, WoodBackGround.width, WoodBackGround.height);
+			DrawSprite(WoodBackGround);
 
-			slSetForeColor(PaperBackGround.color.r, PaperBackGround.color.g, PaperBackGround.color.b, 1);
-			slSprite(PaperBackGround.sprite, PaperBackGround.x, PaperBackGround.y, PaperBackGround.width, PaperBackGround.height);
+			DrawSprite(PaperBackGround);
 
 			if (Player.lives == 3)
 			{
-				slSetForeColor(Win_3Star.color.r, Win_3Star.color.g, Win_3Star.color.b, 1);
-				slSprite(Win_3Star.sprite, Win_3Star.x, Win_3Star.y, Win_3Star.width, Win_3Star.height);
+				DrawSprite(Win_3Star);
 			}
 			else if (Player.lives == 2)
 			{
-				slSetForeColor(Win_2Star.color.r, Win_2Star.color.g, Win_2Star.color.b, 1);
-				slSprite(Win_2Star.sprite, Win_2Star.x, Win_2Star.y, Win_2Star.width, Win_2Star.height);
+				DrawSprite(Win_2Star);
 			}
 			else
 			{
-				slSetForeColor(Win_1Star.color.r, Win_1Star.color.g, Win_1Star.color.b, 1);
-				slSprite(Win_1Star.sprite, Win_1Star.x, Win_1Star.y, Win_1Star.width, Win_1Star.height);
+				DrawSprite(Win_1Star);
 			}
-			slSetForeColor(Win_Leaf.color.r, Win_Leaf.color.g, Win_Leaf.color.b, 1);
-			slSprite(Win_Leaf.sprite, Win_Leaf.x, Win_Leaf.y, Win_Leaf.width, Win_Leaf.height);
 
-			slSetForeColor(Next_Button.color.r, Next_Button.color.g, Next_Button.color.b, 1);
-			slSprite(Next_Button.sprite, Next_Button.x, Next_Button.y, Next_Button.width, Next_Button.height);
+			DrawSprite(Win_Leaf);
 
-			slSetForeColor(Menu_Button.color.r, Menu_Button.color.g, Menu_Button.color.b, 1);
-			slSprite(Menu_Button.sprite, Menu_Button.x, Menu_Button.y, Menu_Button.width, Menu_Button.height);
+			DrawSprite(Next_Button);
+
+			DrawSprite(Menu_Button);
 		}
 		else if (state == GameState::Lose)
 		{
-			slSetForeColor(BackGround2.color.r, BackGround2.color.g, BackGround2.color.b, 1);
-			slSprite(BackGround2.sprite, BackGround2.x, BackGround2.y, BackGround2.width, BackGround2.height);
+			DrawSprite(BackGround2);
 
-			slSetForeColor(WoodBackGround.color.r, WoodBackGround.color.g, WoodBackGround.color.b, 1);
-			slSprite(WoodBackGround.sprite, WoodBackGround.x, WoodBackGround.y, WoodBackGround.width, WoodBackGround.height);
+			DrawSprite(WoodBackGround);
 
-			slSetForeColor(PaperBackGround.color.r, PaperBackGround.color.g, PaperBackGround.color.b, 1);
-			slSprite(PaperBackGround.sprite, PaperBackGround.x, PaperBackGround.y, PaperBackGround.width, PaperBackGround.height);
+			DrawSprite(PaperBackGround);
+			
+			DrawSprite(Lose_0Star);
+			
+			DrawSprite(Lose_Leaf);
 
-			slSetForeColor(Lose_0Star.color.r, Lose_0Star.color.g, Lose_0Star.color.b, 1);
-			slSprite(Lose_0Star.sprite, Lose_0Star.x, Lose_0Star.y, Lose_0Star.width, Lose_0Star.height);
+			DrawSprite(Menu_Button);
 
-			slSetForeColor(Lose_Leaf.color.r, Lose_Leaf.color.g, Lose_Leaf.color.b, 1);
-			slSprite(Lose_Leaf.sprite, Lose_Leaf.x, Lose_Leaf.y, Lose_Leaf.width, Lose_Leaf.height);
-
-			slSetForeColor(Menu_Button.color.r, Menu_Button.color.g, Menu_Button.color.b, 1);
-			slSprite(Menu_Button.sprite, Menu_Button.x, Menu_Button.y, Menu_Button.width, Menu_Button.height);
-
-			slSetForeColor(Restart_Button.color.r, Restart_Button.color.g, Restart_Button.color.b, 1);
-			slSprite(Restart_Button.sprite, Restart_Button.x, Restart_Button.y, Restart_Button.width, Restart_Button.height);
+			DrawSprite(Restart_Button);
 		}
 		else if (state == GameState::Paused)
 		{
-			slSetForeColor(BackGround2.color.r, BackGround2.color.g, BackGround2.color.b, 1);
-			slSprite(BackGround2.sprite, BackGround2.x, BackGround2.y, BackGround2.width, BackGround2.height);
+			DrawSprite(BackGround2);
 
-			slSetForeColor(WoodBackGround.color.r, WoodBackGround.color.g, WoodBackGround.color.b, 1);
-			slSprite(WoodBackGround.sprite, WoodBackGround.x, WoodBackGround.y, WoodBackGround.width, WoodBackGround.height);
+			DrawSprite(WoodBackGround);
 
-			slSetForeColor(PaperBackGround.color.r, PaperBackGround.color.g, PaperBackGround.color.b, 1);
-			slSprite(PaperBackGround.sprite, PaperBackGround.x, PaperBackGround.y, PaperBackGround.width, PaperBackGround.height);
+			DrawSprite(PaperBackGround);
 
-			slSetForeColor(Pause_Leaf.color.r, Pause_Leaf.color.g, Pause_Leaf.color.b, 1);
-			slSprite(Pause_Leaf.sprite, Pause_Leaf.x, Pause_Leaf.y, Pause_Leaf.width, Pause_Leaf.height);
+			DrawSprite(Pause_Leaf);
 
-			slSetForeColor(Menu_Button.color.r, Menu_Button.color.g, Menu_Button.color.b, 1);
-			slSprite(Menu_Button.sprite, Menu_Button.x, Menu_Button.y, Menu_Button.width, Menu_Button.height);
+			DrawSprite(Menu_Button);
 
-			slSetForeColor(Close_Button.color.r, Close_Button.color.g, Close_Button.color.b, 1);
-			slSprite(Close_Button.sprite, Close_Button.x, Close_Button.y, Close_Button.width, Close_Button.height);
+			DrawSprite(Close_Button);
 
-			slSetForeColor(Restart_Button.color.r, Restart_Button.color.g, Restart_Button.color.b, 1);
-			slSprite(Restart_Button.sprite, Restart_Button.x, Restart_Button.y, Restart_Button.width, Restart_Button.height);
+			DrawSprite(Restart_Button);
 
 		}
 		else if (state == GameState::ControlRules)
 		{
-			slSetForeColor(BackGround.color.r, BackGround.color.g, BackGround.color.b, 1);
-			slSprite(BackGround.sprite, BackGround.x, BackGround.y, BackGround.width, BackGround.height);
+			DrawSprite(BackGround);
 
-			slSetForeColor(WoodBackGround.color.r, WoodBackGround.color.g, WoodBackGround.color.b, 1);
-			slSprite(WoodBackGround.sprite, WoodBackGround.x, WoodBackGround.y, WoodBackGround.width, WoodBackGround.height);
+			DrawSprite(WoodBackGround);
 
-			slSetForeColor(Control_Rules.color.r, Control_Rules.color.g, Control_Rules.color.b, 1);
-			slSprite(Control_Rules.sprite, Control_Rules.x, Control_Rules.y, Control_Rules.width, Control_Rules.height);
+			DrawSprite(Control_Rules);
 			
-			slSetForeColor(Rules_Leaf.color.r, Rules_Leaf.color.g, Rules_Leaf.color.b, 1);
-			slSprite(Rules_Leaf.sprite, Rules_Leaf.x, Rules_Leaf.y, Rules_Leaf.width, Rules_Leaf.height);
+			DrawSprite(Rules_Leaf);
 			
-			slSetForeColor(Next_Button.color.r, Next_Button.color.g, Next_Button.color.b, 1);
-			slSprite(Next_Button.sprite, Next_Button.x, Next_Button.y, Next_Button.width, Next_Button.height);
+			DrawSprite(Next_Button);
 		}
 		else if(state == GameState::PowerUpRules)
 		{
-			slSetForeColor(BackGround.color.r, BackGround.color.g, BackGround.color.b, 1);
-			slSprite(BackGround.sprite, BackGround.x, BackGround.y, BackGround.width, BackGround.height);
+			DrawSprite(BackGround);
 
-			slSetForeColor(WoodBackGround.color.r, WoodBackGround.color.g, WoodBackGround.color.b, 1);
-			slSprite(WoodBackGround.sprite, WoodBackGround.x, WoodBackGround.y, WoodBackGround.width, WoodBackGround.height);
+			DrawSprite(WoodBackGround);
 
-			slSetForeColor(PowerUp_Rules.color.r, PowerUp_Rules.color.g, PowerUp_Rules.color.b, 1);
-			slSprite(PowerUp_Rules.sprite, PowerUp_Rules.x, PowerUp_Rules.y, PowerUp_Rules.width, PowerUp_Rules.height);
+			DrawSprite(PowerUp_Rules);
 
-			slSetForeColor(Rules_Leaf.color.r, Rules_Leaf.color.g, Rules_Leaf.color.b, 1);
-			slSprite(Rules_Leaf.sprite, Rules_Leaf.x, Rules_Leaf.y, Rules_Leaf.width, Rules_Leaf.height);
+			DrawSprite(Rules_Leaf);
 
-			slSetForeColor(Back_Button.color.r, Back_Button.color.g, Back_Button.color.b, 1);
-			slSprite(Back_Button.sprite, Back_Button.x, Back_Button.y, Back_Button.width, Back_Button.height);
+			DrawSprite(Back_Button);
 
-			slSetForeColor(Play_Button.color.r, Play_Button.color.g, Play_Button.color.b, 1);
-			slSprite(Play_Button.sprite, Play_Button.x, Play_Button.y, Play_Button.width, Play_Button.height);
+			DrawSprite(Play_Button);
 		
 		}
+	}
+
+	void DrawSprite(RecSprites Sprite)
+	{
+		slSetForeColor(Sprite.color.r, Sprite.color.g, Sprite.color.b, 1);
+		slSprite(Sprite.sprite[Sprite.currentSprite], Sprite.x, Sprite.y, Sprite.width, Sprite.height);
 	}
 
 	bool CircleRect(Ball& ball, RecSprites& rec)
@@ -770,76 +789,96 @@ namespace game
 
 		if (state == GameState::Playing)
 		{
-			if (ball.y < Player.y)
+			int aliveBalls = 0;
+			for (int i = 0; i < actualBalls; i++)
 			{
-				Player.lives--;
-				ball.y = 160;
-				ball.directionY *= -1;
-				ball.directionX += RandomPullOut();
+				if (ball[i].y < Player.y - Player.height/2)
+				{
+					ball[i].speed = ball[i].BASE_SPEED;
+					ball[i].isAlive = false;
+				}
+
+				if (ball[i].x > SCREEN_WIDTH - ball[i].radius)
+				{
+					ball[i].directionX *= -1;
+					ball[i].x = SCREEN_WIDTH - ball[i].radius;
+				}
+				if (ball[i].x < ball[i].radius)
+				{
+					ball[i].directionX *= -1;
+					ball[i].x = ball[i].radius;
+				}
+				if (ball[i].y > SCREEN_HEIGHT - 120 - ball[i].radius)
+				{
+					ball[i].directionY *= -1;
+					ball[i].y -= ball[i].radius;
+				}
+				if (ball[i].isAlive)
+				{
+					aliveBalls++;
+				}
+
+				PlayerColision(ball[i]);
 			}
 
-			if (ball.x > SCREEN_WIDTH - ball.radius)
+			if (aliveBalls == 0)
 			{
-				ball.directionX *= -1;
-				ball.x = SCREEN_WIDTH - ball.radius;
+			actualBalls = 1;
+			ball[0].isAlive = true;
+			ball[0].y = 160;
+			ball[0].x = 550;
+			ball[0].directionY *= -1;
+			ball[0].directionX += RandomPullOut();
+			ball[0].speed = ball[0].BASE_SPEED;
+			Player.lives--;
 			}
-			if (ball.x < ball.radius)
-			{
-				ball.directionX *= -1;
-				ball.x = ball.radius;
-			}
-			if (ball.y > SCREEN_HEIGHT - ball.radius)
-			{
-				ball.directionY *= -1;
-				ball.y = SCREEN_HEIGHT - ball.radius;
-			}
-
-			if (PlayerColision() && ball.y > Player.y + Player.height)
-			{
-				ball.y += ball.radius / 2;
-				AddBallSpeed(ball);
-			}
-
+			
+			
 			for (int i = 0; i < REC_AMOUNT; i++)
 			{
-				if (Rects[i].isAlive)
+				for (int j = 0; j < actualBalls; j++)
 				{
-					if (CircleRect(ball, Rects[i]))
+					if (Rects[i].isAlive)
 					{
-						float leftRec = Rects[i].x - Rects[i].width / 2;
-						float rightRec = Rects[i].x + Rects[i].width / 2;
-						float upRec = Rects[i].y + Rects[i].height / 2;
-						float downRec = Rects[i].y - Rects[i].height / 2;
 
-						if (rightRec < ball.x + ball.radius)
+						if (CircleRect(ball[j], Rects[i]))
 						{
-							ball.x += ball.radius / 2;
-							ball.directionX *= -1;
-						}
-						else if (leftRec > ball.x + ball.radius )
-						{
-							ball.x -= ball.radius / 2;
-							ball.directionX *= -1;
+							float leftRec = Rects[j].x - Rects[i].width / 2;
+							float rightRec = Rects[i].x + Rects[i].width / 2;
+							float upRec = Rects[i].y + Rects[i].height / 2;
+							float downRec = Rects[i].y - Rects[i].height / 2;
+
+							if (rightRec < ball[j].x + ball[j].radius)
+							{
+								ball[j].x += ball[j].radius / 2;
+								ball[j].directionX *= -1;
+							}
+							else if (leftRec > ball[j].x + ball[j].radius)
+							{
+								ball[j].x -= ball[j].radius / 2;
+								ball[j].directionX *= -1;
+							}
+
+							if (downRec < ball[j].y + ball[j].radius)
+							{
+								ball[j].y -= ball[j].radius / 2;
+								ball[j].directionY *= -1;
+							}
+							else if (upRec > ball[j].y + ball[j].radius)
+							{
+								ball[j].y += ball[j].radius / 2;
+								ball[j].directionY *= -1;
+							}
+
+
+							if (!Rects[i].isaRock)
+							{
+								Rects[i].lives -= 1;
+							}
 						}
 
-						if (downRec < ball.y + ball.radius)
-						{
-							ball.y -= ball.radius / 2;
-							ball.directionY *= -1;
-						}
-						else if (upRec > ball.y + ball.radius)
-						{
-							ball.y += ball.radius /2;
-							ball.directionY *= -1;
-						}
 
-
-						if (!Rects[i].isaRock)
-						{
-							Rects[i].lives -= 1;
-						}
 					}
-
 				}
 			}
 
@@ -1030,7 +1069,7 @@ namespace game
 		}
 	}
 
-	bool PlayerColision()
+	void PlayerColision(Ball& ball)
 	{
 		float testX = ball.x;
 		float testY = ball.y;
@@ -1074,9 +1113,14 @@ namespace game
 			ball.directionX = cosf(angle);
 			ball.directionY = sinf(angle);
 
-			return true;
+			AddBallSpeed(ball);
+			ball.y += ball.radius / 2;
+
+			
+			Player.currentSprite = 1;
+			
 		}
-		return false;
+		
 	}
 
 	bool RandomizeBool()

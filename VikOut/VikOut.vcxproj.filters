@@ -39,6 +39,9 @@
     <ClCompile Include="..\src\ProyectUtilities\Colours.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Objects\PowerUp.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\ProyectUtilities\Utilities.h">
@@ -66,6 +69,9 @@
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Scenes\LevelSelector.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Objects\PowerUp.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>

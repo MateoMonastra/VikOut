@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="..\src\Objects\Ball.cpp" />
+    <ClCompile Include="..\src\Objects\PowerUp.cpp" />
     <ClCompile Include="..\src\ProyectUtilities\Colours.cpp" />
     <ClCompile Include="..\src\ProyectUtilities\Utilities.cpp" />
     <ClCompile Include="..\src\Scenes\Game.cpp" />
@@ -30,6 +31,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\Objects\Ball.h" />
+    <ClInclude Include="..\src\Objects\PowerUp.h" />
     <ClInclude Include="..\src\Objects\Rectangles.h" />
     <ClInclude Include="..\src\ProyectUtilities\Colours.h" />
     <ClInclude Include="..\src\ProyectUtilities\Utilities.h" />

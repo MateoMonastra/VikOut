@@ -23,6 +23,7 @@ namespace levelSelector
 	};
 
 	static bool MouseColision(float mousex, float mousey, Button rec);
+	void DrawSprite(Button Sprite);
 
 	Button Level1_Button;
 	Button Level2_Button;
@@ -91,8 +92,8 @@ namespace levelSelector
 		BackGround.SpriteH = 1150;
 
 		Close_Button.sprite = slLoadTexture("assets/jungle/PNG/pause/close.png");
-		Close_Button.TexturePosition.x = 240;
-		Close_Button.TexturePosition.y = 680;
+		Close_Button.TexturePosition.x = 200;
+		Close_Button.TexturePosition.y = 700;
 		Close_Button.SpriteW = 140;
 		Close_Button.SpriteH = 140;
 
@@ -192,35 +193,26 @@ namespace levelSelector
 	
 	void LevelSelectorDraw()
 	{
-		slSetForeColor(BackGround.color.r, BackGround.color.g, BackGround.color.b, 1);
-		slSprite(BackGround.sprite, BackGround.TexturePosition.x, BackGround.TexturePosition.y, BackGround.SpriteW, BackGround.SpriteH);
+		
+		DrawSprite(BackGround);
 
-		slSetForeColor(WoodBackGround.color.r, WoodBackGround.color.g, WoodBackGround.color.b, 1);
-		slSprite(WoodBackGround.sprite, WoodBackGround.TexturePosition.x, WoodBackGround.TexturePosition.y, WoodBackGround.SpriteW, WoodBackGround.SpriteH);
+		DrawSprite(WoodBackGround);
 
-		slSetForeColor(PaperBackGround.color.r, PaperBackGround.color.g, PaperBackGround.color.b, 1);
-		slSprite(PaperBackGround.sprite, PaperBackGround.TexturePosition.x, PaperBackGround.TexturePosition.y, PaperBackGround.SpriteW, PaperBackGround.SpriteH);
+		DrawSprite(PaperBackGround);
 
-		slSetForeColor(LevelSelector_Leaf.color.r, LevelSelector_Leaf.color.g, LevelSelector_Leaf.color.b, 1);
-		slSprite(LevelSelector_Leaf.sprite, LevelSelector_Leaf.TexturePosition.x, LevelSelector_Leaf.TexturePosition.y, LevelSelector_Leaf.SpriteW, LevelSelector_Leaf.SpriteH);
+		DrawSprite(LevelSelector_Leaf);
 
-		slSetForeColor(Level1_Button.color.r, Level1_Button.color.g, Level1_Button.color.b, 1);
-		slSprite(Level1_Button.sprite, Level1_Button.TexturePosition.x, Level1_Button.TexturePosition.y, Level1_Button.SpriteW, Level1_Button.SpriteH);
+		DrawSprite(Level1_Button);
 
-		slSetForeColor(Level2_Button.color.r, Level2_Button.color.g, Level2_Button.color.b, 1);
-		slSprite(Level2_Button.sprite, Level2_Button.TexturePosition.x, Level2_Button.TexturePosition.y, Level2_Button.SpriteW, Level2_Button.SpriteH);
+		DrawSprite(Level2_Button);
 
-		slSetForeColor(Level3_Button.color.r, Level3_Button.color.g, Level3_Button.color.b, 1);
-		slSprite(Level3_Button.sprite, Level3_Button.TexturePosition.x, Level3_Button.TexturePosition.y, Level3_Button.SpriteW, Level3_Button.SpriteH);
+		DrawSprite(Level3_Button);
+		
+		DrawSprite(Level4_Button);
+		
+		DrawSprite(Level5_Button);
 
-		slSetForeColor(Level4_Button.color.r, Level4_Button.color.g, Level4_Button.color.b, 1);
-		slSprite(Level4_Button.sprite, Level4_Button.TexturePosition.x, Level4_Button.TexturePosition.y, Level4_Button.SpriteW, Level4_Button.SpriteH);
-
-		slSetForeColor(Level5_Button.color.r, Level5_Button.color.g, Level5_Button.color.b, 1);
-		slSprite(Level5_Button.sprite, Level5_Button.TexturePosition.x, Level5_Button.TexturePosition.y, Level5_Button.SpriteW, Level5_Button.SpriteH);
-
-		slSetForeColor(Close_Button.color.r, Close_Button.color.g, Close_Button.color.b, 1);
-		slSprite(Close_Button.sprite, Close_Button.TexturePosition.x, Close_Button.TexturePosition.y, Close_Button.SpriteW, Close_Button.SpriteH);
+		DrawSprite(Close_Button);
 
 	}
 	
@@ -237,5 +229,11 @@ namespace levelSelector
 			return true;
 		}
 		return false;
+	}
+
+	void DrawSprite(Button Sprite)
+	{
+		slSetForeColor(Sprite.color.r, Sprite.color.g, Sprite.color.b, 1);
+		slSprite(Sprite.sprite, Sprite.TexturePosition.x, Sprite.TexturePosition.y, Sprite.SpriteW, Sprite.SpriteH);
 	}
 }

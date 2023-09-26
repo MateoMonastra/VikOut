@@ -29,25 +29,25 @@ namespace menu
 	static Button Title;
 	static Button Play;
 	static Button Level_Selector;
+	static Button Autor_Leaf;
 	static Button Settings;
 	static Button Exit;
 	static Levels Actuallevel;
 
 	static bool MouseColision(float mousex, float mousey, Button rec);
+	static void DrawSprite(Button Sprite);
 
 	void InitMenu()
 	{
 		BackGround.sprite = slLoadTexture("assets/jungle/PNG/menu/BackGround.png");
-		BackGround.TexturePosition = { 550 , 475 };
-		BackGround.SpriteW = 1100;
-		BackGround.SpriteH = 950;
-
+		BackGround.TexturePosition = { 550 , 550 };
+		BackGround.SpriteW = 1250;
+		BackGround.SpriteH = 1100;
 
 		Title.sprite = slLoadTexture("assets/jungle/PNG/menu/Title.png");
 		Title.TexturePosition = { 800 / 2 + 130 , 800 - 120 };
 		Title.SpriteW = 900;
 		Title.SpriteH = 600;
-		Title.color = colors::WHITE;
 
 		Play.sprite = slLoadTexture("assets/jungle/PNG/menu/play.png");
 		Play.TexturePosition = { 400 - 60, 375 };
@@ -66,13 +66,16 @@ namespace menu
 		Settings.SpriteW = 140;
 		Settings.SpriteH = 140;
 
-
 		Exit.sprite = slLoadTexture("assets/jungle/PNG/buttons/close.png");
 		Exit.TexturePosition = { 400 + 160, 175 };
 		Exit.SpriteW = 140;
 		Exit.SpriteH = 140;
 
-
+		Autor_Leaf.sprite = slLoadTexture("assets/jungle/PNG/menu/Autor_Leaf.png");
+		Autor_Leaf.TexturePosition = { 850 , 100 };
+		Autor_Leaf.SpriteW = 500;
+		Autor_Leaf.SpriteH = 250;
+		
 	}
 
 	bool MouseColision(float mousex, float mousey, Button rec)
@@ -152,24 +155,25 @@ namespace menu
 
 	void MenuDrawing()
 	{
-		slSetForeColor(BackGround.color.r, BackGround.color.g, BackGround.color.b, 1);
-		slSprite(BackGround.sprite, BackGround.TexturePosition.x, BackGround.TexturePosition.y, BackGround.SpriteW, BackGround.SpriteH);
+		DrawSprite(BackGround);
+		
+		DrawSprite(Title);
 
-		slSetForeColor(Title.color.r, Title.color.g, Title.color.b, 1);
-		slSprite(Title.sprite, Title.TexturePosition.x, Title.TexturePosition.y, Title.SpriteW, Title.SpriteH);
+		DrawSprite(Play);
 
-		slSetForeColor(Play.color.r, Play.color.g, Play.color.b, 1);
-		slSprite(Play.sprite, Play.TexturePosition.x, Play.TexturePosition.y, Play.SpriteW, Play.SpriteH);
+		DrawSprite(Level_Selector);
 
-		slSetForeColor(Level_Selector.color.r, Level_Selector.color.g, Level_Selector.color.b, 1);
-		slSprite(Level_Selector.sprite, Level_Selector.TexturePosition.x, Level_Selector.TexturePosition.y, Level_Selector.SpriteW, Level_Selector.SpriteH);
+		DrawSprite(Settings);
 
-		slSetForeColor(Settings.color.r, Settings.color.g, Settings.color.b, 1);
-		slSprite(Settings.sprite, Settings.TexturePosition.x, Settings.TexturePosition.y, Settings.SpriteW, Settings.SpriteH);
+		DrawSprite(Exit);
+		
+		DrawSprite(Autor_Leaf);
+	}
 
-		slSetForeColor(Exit.color.r, Exit.color.g, Exit.color.b, 1);
-		slSprite(Exit.sprite, Exit.TexturePosition.x, Exit.TexturePosition.y, Exit.SpriteW, Exit.SpriteH);
-
+	void DrawSprite(Button Sprite)
+	{
+		slSetForeColor(Sprite.color.r, Sprite.color.g, Sprite.color.b, 1);
+		slSprite(Sprite.sprite, Sprite.TexturePosition.x, Sprite.TexturePosition.y, Sprite.SpriteW, Sprite.SpriteH);
 	}
 
 }

@@ -12,7 +12,11 @@ struct RecSprites
 	bool havePowerUp = false;
 	bool isAlive = true;
 	bool isaRock = false;
-	int sprite = {0};
+
+	static const int MAX_SPRITES = 3;
+	int sprite[MAX_SPRITES] = {0};
+	int currentSprite = 0;
+
 	colors::Color color = colors::WHITE;
 	const float SPEED = 360;
 };
