@@ -15,12 +15,11 @@ namespace scenemanager
 	static void Update();
 	static void Draw();
 
-
 	void RunProgram()
 	{
 		InitProgram();
 
-		while (!slShouldClose() && currentScreen != Screen::Settings)
+		while (!slShouldClose() && currentScreen != Screen::Exit)
 		{
 			Update();
 			Draw();
@@ -62,7 +61,6 @@ namespace scenemanager
 
 			break;
 		case Screen::Exit:
-			slClose();
 			break;
 		default:
 			break;
@@ -91,5 +89,6 @@ namespace scenemanager
 
 		slRender();
 	}
+
 
 }
