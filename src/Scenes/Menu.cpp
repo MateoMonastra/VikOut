@@ -36,7 +36,7 @@ namespace menu
 	static Levels Actuallevel;
 
 	static bool MouseColision(float mousex, float mousey, Button rec);
-	static void DrawSprite(Button Sprite);
+	static void DrawRecSprite(Button Sprite);
 
 	void InitMenu()
 	{
@@ -157,22 +157,22 @@ namespace menu
 
 	void MenuDrawing()
 	{
-		DrawSprite(BackGround);
+		DrawRecSprite(BackGround);
 		
-		DrawSprite(Title);
+		DrawRecSprite(Title);
 
-		DrawSprite(Play);
+		DrawRecSprite(Play);
 
-		DrawSprite(Level_Selector);
+		DrawRecSprite(Level_Selector);
 
-		DrawSprite(Credits);
+		DrawRecSprite(Credits);
 
-		DrawSprite(Exit);
+		DrawRecSprite(Exit);
 		
-		DrawSprite(Autor_Leaf);
+		DrawRecSprite(Autor_Leaf);
 	}
 
-	void DrawSprite(Button Sprite)
+	void DrawRecSprite(Button Sprite)
 	{
 		slSetForeColor(Sprite.color.r, Sprite.color.g, Sprite.color.b, 1);
 		slSprite(Sprite.sprite, Sprite.TexturePosition.x, Sprite.TexturePosition.y, Sprite.SpriteW, Sprite.SpriteH);

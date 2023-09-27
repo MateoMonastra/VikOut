@@ -10,7 +10,7 @@ struct Ball
     float radius;
     float speed = 150;
     const float MAX_SPEED = 400;
-    const float BASE_SPEED = 150;
+    const float BASE_SPEED = 230;
     const float SPEED_INCREMENT = 60;
     float directionX = 1;
     float directionY = 1;

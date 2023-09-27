@@ -23,7 +23,7 @@ namespace levelSelector
 	};
 
 	static bool MouseColision(float mousex, float mousey, Button rec);
-	void DrawSprite(Button Sprite);
+	void DrawRecSprite(Button Sprite);
 
 	Button Level1_Button;
 	Button Level2_Button;
@@ -194,25 +194,25 @@ namespace levelSelector
 	void LevelSelectorDraw()
 	{
 		
-		DrawSprite(BackGround);
+		DrawRecSprite(BackGround);
 
-		DrawSprite(WoodBackGround);
+		DrawRecSprite(WoodBackGround);
 
-		DrawSprite(PaperBackGround);
+		DrawRecSprite(PaperBackGround);
 
-		DrawSprite(LevelSelector_Leaf);
+		DrawRecSprite(LevelSelector_Leaf);
 
-		DrawSprite(Level1_Button);
+		DrawRecSprite(Level1_Button);
 
-		DrawSprite(Level2_Button);
+		DrawRecSprite(Level2_Button);
 
-		DrawSprite(Level3_Button);
+		DrawRecSprite(Level3_Button);
 		
-		DrawSprite(Level4_Button);
+		DrawRecSprite(Level4_Button);
 		
-		DrawSprite(Level5_Button);
+		DrawRecSprite(Level5_Button);
 
-		DrawSprite(Close_Button);
+		DrawRecSprite(Close_Button);
 
 	}
 	
@@ -231,7 +231,7 @@ namespace levelSelector
 		return false;
 	}
 
-	void DrawSprite(Button Sprite)
+	void DrawRecSprite(Button Sprite)
 	{
 		slSetForeColor(Sprite.color.r, Sprite.color.g, Sprite.color.b, 1);
 		slSprite(Sprite.sprite, Sprite.TexturePosition.x, Sprite.TexturePosition.y, Sprite.SpriteW, Sprite.SpriteH);

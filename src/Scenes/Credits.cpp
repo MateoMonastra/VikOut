@@ -20,7 +20,7 @@ namespace credits
 		colors::Color color = colors::WHITE;
 	};
 
-	void DrawSprite(Button Sprite);
+	void DrawRecSprite(Button Sprite);
 	bool MouseColision(float mousex, float mousey, Button rec);
 
 	Button BackGround;
@@ -88,15 +88,15 @@ namespace credits
 
 	void CreditsDrawing()
 	{
-		DrawSprite(BackGround);
-		DrawSprite(WoodBackGround);
-		DrawSprite(PaperBackGround);
-		DrawSprite(Credits_Leaf);
-		DrawSprite(Close_Button);
+		DrawRecSprite(BackGround);
+		DrawRecSprite(WoodBackGround);
+		DrawRecSprite(PaperBackGround);
+		DrawRecSprite(Credits_Leaf);
+		DrawRecSprite(Close_Button);
 
 	}
 
-	void DrawSprite(Button Sprite)
+	void DrawRecSprite(Button Sprite)
 	{
 		slSetForeColor(Sprite.color.r, Sprite.color.g, Sprite.color.b, 1);
 		slSprite(Sprite.sprite, Sprite.TexturePosition.x, Sprite.TexturePosition.y, Sprite.SpriteW, Sprite.SpriteH);

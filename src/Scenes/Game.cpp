@@ -3,6 +3,7 @@
 #include "ProyectUtilities/Utilities.h"
 #include "Objects/Rectangles.h"
 #include "Objects/Ball.h"
+#include "Objects/PowerUp.h"
 
 namespace game
 {
@@ -26,18 +27,22 @@ namespace game
 	static void initStatesSprites();
 	static bool MouseColision(float mousex, float mousey, RecSprites rec);
 	static float RandomPullOut();
-	static void DrawSprite(RecSprites Sprite);
+	static void DrawRecSprite(RecSprites Sprite);
+	static void DrawBallSprite(Ball Sprite);
 
 	static const int SCREEN_WIDTH = 1100;
 	static const int TOP_HEIGHT = 865;
 	static const int REC_AMOUNT = 42;
 	static const int FIX_PLAYER_HEIGHT = 8;
 	static const int FIX_PLAYER_WIDTH = 60;
-	static const int MAX_BALLS = 30; // NO SE SI SE PODIA USAR PUNTEROS ASI QUE PONGO UN NUMERO IRREAL
+	static const int MAX_BALLS = 50; // NO SE SI SE PODIA USAR PUNTEROS ASI QUE PONGO UN NUMERO "Inalcanzable"
 	static int actualBalls = 1;
 	static float timer = 0;
 	static const float TIME_FOR_FIRST_ANIMATION = 0.18f;
 	static const float TIME_FOR_SECOND_ANIMATION = 0.5f;
+	static bool removeLife = false;
+	static bool multiBall = false;
+	static bool extraLife = false;
 
 	static Ball ball[MAX_BALLS];
 	static RecSprites Player;
@@ -50,6 +55,7 @@ namespace game
 	static RecSprites Win_1Star;
 	static RecSprites WoodBackGround;
 	static RecSprites PaperBackGround;
+	static RecSprites PaperBackGround_Pause;
 	static RecSprites BackGround2;
 	static RecSprites Lose_0Star;
 	static RecSprites Lose_Leaf;
@@ -67,6 +73,9 @@ namespace game
 	static RecSprites Lives_Board;
 	static RecSprites Top_Height_Line;
 	static RecSprites Rects[REC_AMOUNT];
+	static Ball PowerDownRemoveLife;
+	static Ball PowerUpMultiBall;
+	static Ball PowerUpExtraLife;
 	static Levels Actuallevel;
 	static GameState state;
 
@@ -83,148 +92,249 @@ namespace game
 
 	}
 
-	void initStatesSprites()
+	void GameUpdate(Screen& currentScreen)
 	{
-		Win_Leaf.sprite[Win_Leaf.currentSprite] = slLoadTexture("assets/jungle/PNG/you_win/leaf.png");
-		Win_Leaf.x = 550;
-		Win_Leaf.y = 730;
-		Win_Leaf.width = 600;
-		Win_Leaf.height = 220;
+		CollisionCkeck(currentScreen);
 
-		Win_3Star.sprite[Win_3Star.currentSprite] = slLoadTexture("assets/jungle/PNG/you_win/3star.png");
-		Win_3Star.x = 550;
-		Win_3Star.y = 530;
-		Win_3Star.width = 600;
-		Win_3Star.height = 220;
+		if (state == GameState::Playing)
+		{
+			for (int i = 0; i < actualBalls; i++)
+			{
+				BallMovement(ball[i]);
+			}
 
-		Win_2Star.sprite[Win_2Star.currentSprite] = slLoadTexture("assets/jungle/PNG/you_win/2star.png");
-		Win_2Star.x = 550;
-		Win_2Star.y = 530;
-		Win_2Star.width = 600;
-		Win_2Star.height = 220;
+			PlayerInput();
+			if (Player.currentSprite != 0)
+			{
+				timer += slGetDeltaTime();
+				if (timer > TIME_FOR_SECOND_ANIMATION)
+				{
+					Player.currentSprite = 0;
+				}
+				else if (timer > TIME_FOR_FIRST_ANIMATION)
+				{
+					Player.currentSprite = 2;
+				}
+			}
+			else
+			{
+				timer = 0;
+			}
+			
+			powerUp::PowerUpsUpdate(PowerUpMultiBall, PowerDownRemoveLife, PowerUpExtraLife, multiBall, extraLife, removeLife, actualBalls, Player, ball[0]);
 
-		Win_1Star.sprite[Win_1Star.currentSprite] = slLoadTexture("assets/jungle/PNG/you_win/1star.png");
-		Win_1Star.x = 550;
-		Win_1Star.y = 530;
-		Win_1Star.width = 600;
-		Win_1Star.height = 220;
-
-		WoodBackGround.sprite[WoodBackGround.currentSprite] = slLoadTexture("assets/jungle/PNG/you_win/WoodBackGround.png");
-		WoodBackGround.x = 550;
-		WoodBackGround.y = 420;
-		WoodBackGround.width = 760;
-		WoodBackGround.height = 700;
-
-		PaperBackGround.sprite[PaperBackGround.currentSprite] = slLoadTexture("assets/jungle/PNG/you_win/PaperBackGround.png");
-		PaperBackGround.x = 550;
-		PaperBackGround.y = 420;
-		PaperBackGround.width = 660;
-		PaperBackGround.height = 600;
-
-		BackGround2.sprite[BackGround2.currentSprite] = slLoadTexture("assets/jungle/PNG/pause/BackGround.png");
-		BackGround2.x = 550;
-		BackGround2.y = 375;
-		BackGround2.width = 1100;
-		BackGround2.height = 1150;
-
-		Lose_0Star.sprite[Lose_0Star.currentSprite] = slLoadTexture("assets/jungle/PNG/you_lose/0star.png");
-		Lose_0Star.x = 550;
-		Lose_0Star.y = 530;
-		Lose_0Star.width = 600;
-		Lose_0Star.height = 220;
-
-		Lose_Leaf.sprite[Lose_Leaf.currentSprite] = slLoadTexture("assets/jungle/PNG/you_lose/leaf.png");
-		Lose_Leaf.x = 550;
-		Lose_Leaf.y = 730;
-		Lose_Leaf.width = 600;
-		Lose_Leaf.height = 220;
-
-		Next_Button.sprite[Next_Button.currentSprite] = slLoadTexture("assets/jungle/PNG/buttons/next.png");
-		Next_Button.x = 750;
-		Next_Button.y = 250;
-		Next_Button.width = 120;
-		Next_Button.height = 120;
-
-		Back_Button.sprite[Back_Button.currentSprite] = slLoadTexture("assets/jungle/PNG/buttons/prew.png");
-		Back_Button.x = 350;
-		Back_Button.y = 250;
-		Back_Button.width = 120;
-		Back_Button.height = 120;
-
-		Pause_Button.sprite[Pause_Button.currentSprite] = slLoadTexture("assets/jungle/PNG/buttons/pause.png");
-		Pause_Button.x = 1050;
-		Pause_Button.y = 905;
-		Pause_Button.width = 80;
-		Pause_Button.height = 80;
-
-		Menu_Button.sprite[Menu_Button.currentSprite] = slLoadTexture("assets/jungle/PNG/buttons/menu.png");
-		Menu_Button.x = 430;
-		Menu_Button.y = 250;
-		Menu_Button.width = 120;
-		Menu_Button.height = 120;
-
-		Play_Button.sprite[Play_Button.currentSprite] = slLoadTexture("assets/jungle/PNG/buttons/play.png");
-		Play_Button.x = 550;
-		Play_Button.y = 250;
-		Play_Button.width = 120;
-		Play_Button.height = 120;
-
-		Restart_Button.sprite[Restart_Button.currentSprite] = slLoadTexture("assets/jungle/PNG/buttons/restart.png");
-		Restart_Button.x = 680;
-		Restart_Button.y = 250;
-		Restart_Button.width = 120;
-		Restart_Button.height = 120;
-
-		Close_Button.sprite[Close_Button.currentSprite] = slLoadTexture("assets/jungle/PNG/pause/close.png");
-		Close_Button.x = 240;
-		Close_Button.y = 680;
-		Close_Button.width = 120;
-		Close_Button.height = 120;
-
-		Pause_Leaf.sprite[Pause_Leaf.currentSprite] = slLoadTexture("assets/jungle/PNG/pause/leaf.png");
-		Pause_Leaf.x = 550;
-		Pause_Leaf.y = 730;
-		Pause_Leaf.width = 600;
-		Pause_Leaf.height = 220;
-
-		PlayerPoints.sprite[PlayerPoints.currentSprite] = slLoadTexture("assets/jungle/PNG/buttons/pause.png");
-		PlayerPoints.x = 1050;
-		PlayerPoints.y = 905;
-		PlayerPoints.width = 80;
-		PlayerPoints.height = 80;
-
-		Control_Rules.sprite[Control_Rules.currentSprite] = slLoadTexture("assets/jungle/PNG/rules/ControlRules.png");
-		Control_Rules.x = 550;
-		Control_Rules.y = 420;
-		Control_Rules.width = 660;
-		Control_Rules.height = 600;
-
-		PowerUp_Rules.sprite[PowerUp_Rules.currentSprite] = slLoadTexture("assets/jungle/PNG/rules/PowerUpRules.png");
-		PowerUp_Rules.x = 550;
-		PowerUp_Rules.y = 420;
-		PowerUp_Rules.width = 660;
-		PowerUp_Rules.height = 600;
-
-		Rules_Leaf.sprite[Rules_Leaf.currentSprite] = slLoadTexture("assets/jungle/PNG/rules/leaf.png");
-		Rules_Leaf.x = 550;
-		Rules_Leaf.y = 730;
-		Rules_Leaf.width = 600;
-		Rules_Leaf.height = 220;
-
-		Lives_Board.sprite[Lives_Board.currentSprite] = slLoadTexture("assets/jungle/PNG/game_sprites/LivesBoard.png");
-		Lives_Board.x = 150;
-		Lives_Board.y = 910;
-		Lives_Board.width = 250;
-		Lives_Board.height = 60;
-
-		Top_Height_Line.sprite[Top_Height_Line.currentSprite] = slLoadTexture("assets/jungle/PNG/game_sprites/TopLine.png");
-		Top_Height_Line.x = 350;
-		Top_Height_Line.y = TOP_HEIGHT;
-		Top_Height_Line.width = 1600;
-		Top_Height_Line.height = 20;
+			state = ShouldContinue();
+		}
 
 	}
 
+	void DrawGame(Screen currentScreen)
+	{
+
+		if (state == GameState::Playing)
+		{
+			double livesAuxX = 160;
+
+			DrawRecSprite(BackGround);
+			for (int i = 0; i < REC_AMOUNT; i++)
+			{
+				if (Rects[i].isAlive)
+				{
+					DrawRecSprite(Rects[i]);
+					/*slRectangleFill(Rects[i].x, Rects[i].y, Rects[i].width, Rects[i].height);*/
+				}
+			}
+
+			slSetForeColor(Player.color.r, Player.color.g, Player.color.b, 1);
+			slSprite(Player.sprite[Player.currentSprite], Player.x, Player.y, Player.width + FIX_PLAYER_WIDTH, Player.height * FIX_PLAYER_HEIGHT);
+
+			if (removeLife)
+			{
+			DrawBallSprite(PowerDownRemoveLife);
+			}
+			if (multiBall)
+			{
+			DrawBallSprite(PowerUpMultiBall);
+			}
+			if (extraLife)
+			{	
+			DrawBallSprite(PowerUpExtraLife);
+			}
+
+			for (int i = 0; i < actualBalls; i++)
+			{
+				DrawBallSprite(ball[i]);
+			}
+
+			DrawRecSprite(Top_Height_Line);
+
+			DrawRecSprite(Lives_Board);
+
+			DrawRecSprite(Pause_Button);
+
+			for (int i = 0; i < Player.lifes; i++)
+			{
+				slSetForeColor(PlayerLive.color.r, PlayerLive.color.g, PlayerLive.color.b, 1);
+				slSprite(PlayerLive.sprite[PlayerLive.currentSprite], livesAuxX, PlayerLive.y, PlayerLive.width, PlayerLive.height);
+				livesAuxX += 35;
+			}
+			/*slRectangleFill(ball.x, ball.y, ball.width, ball.height);
+
+			slRectangleFill(Player.x, Player.y, Player.width, Player.height);*/
+		}
+		else if (state == GameState::Win)
+		{
+			DrawRecSprite(BackGround2);
+
+			DrawRecSprite(WoodBackGround);
+
+			DrawRecSprite(PaperBackGround);
+
+			if (Player.lifes == 3)
+			{
+				DrawRecSprite(Win_3Star);
+			}
+			else if (Player.lifes == 2)
+			{
+				DrawRecSprite(Win_2Star);
+			}
+			else
+			{
+				DrawRecSprite(Win_1Star);
+			}
+
+			DrawRecSprite(Win_Leaf);
+
+			DrawRecSprite(Next_Button);
+
+			DrawRecSprite(Menu_Button);
+		}
+		else if (state == GameState::Lose)
+		{
+			DrawRecSprite(BackGround2);
+
+			DrawRecSprite(WoodBackGround);
+
+			DrawRecSprite(PaperBackGround);
+
+			DrawRecSprite(Lose_0Star);
+
+			DrawRecSprite(Lose_Leaf);
+
+			DrawRecSprite(Menu_Button);
+
+			DrawRecSprite(Restart_Button);
+		}
+		else if (state == GameState::Paused)
+		{
+			DrawRecSprite(BackGround2);
+
+			DrawRecSprite(WoodBackGround);
+
+			DrawRecSprite(PaperBackGround_Pause);
+
+			DrawRecSprite(Pause_Leaf);
+
+			DrawRecSprite(Menu_Button);
+
+			DrawRecSprite(Close_Button);
+
+			DrawRecSprite(Restart_Button);
+
+		}
+		else if (state == GameState::ControlRules)
+		{
+			DrawRecSprite(BackGround);
+
+			DrawRecSprite(WoodBackGround);
+
+			DrawRecSprite(Control_Rules);
+
+			DrawRecSprite(Rules_Leaf);
+
+			DrawRecSprite(Next_Button);
+		}
+		else if (state == GameState::PowerUpRules)
+		{
+			DrawRecSprite(BackGround);
+
+			DrawRecSprite(WoodBackGround);
+
+			DrawRecSprite(PowerUp_Rules);
+
+			DrawRecSprite(Rules_Leaf);
+
+			DrawRecSprite(Back_Button);
+
+			DrawRecSprite(Play_Button);
+
+		}
+	}
+
+	GameState ShouldContinue()
+	{
+		int aliveRecCounter = 0;
+
+		for (int i = 0; i < REC_AMOUNT; i++)
+		{
+			if (Rects[i].isAlive)
+			{
+
+
+				if (!Rects[i].isaRock)
+				{
+					if (Rects[i].lifes < 1)
+					{
+						Rects[i].isAlive = false;
+
+						if (Rects[i].havePowerUp)
+						{
+							int randomNum = rand() % 3 + 1;
+
+							if (randomNum == 1)
+							{
+								removeLife = true;
+								PowerDownRemoveLife.x = Rects[i].x;
+								PowerDownRemoveLife.y = Rects[i].y;
+							}
+							else if (randomNum == 2)
+							{
+								multiBall = true;
+								PowerUpMultiBall.x = Rects[i].x;
+								PowerUpMultiBall.y = Rects[i].y;
+							}
+							else
+							{
+								extraLife = true;
+								PowerUpExtraLife.x = Rects[i].x;
+								PowerUpExtraLife.y = Rects[i].y;
+							}
+
+
+						}
+					}
+					else
+					{
+						aliveRecCounter++;
+					}
+				}
+			}
+		}
+
+		if (aliveRecCounter == 0)
+		{
+			return GameState::Win;
+		}
+		if (Player.lifes < 1)
+		{
+			return GameState::Lose;
+		}
+
+
+
+		return GameState::Playing;
+	}
+	
 	void LevelGenerator()
 	{
 		Player.sprite[0] = slLoadTexture("assets/jungle/PNG/game_sprites/Rest.png");
@@ -234,9 +344,9 @@ namespace game
 		Player.y = 90;
 		Player.width = 260;
 		Player.height = 30;
-		Player.lives = 3;
+		Player.lifes = 3;
 
-		PlayerLive.sprite[PlayerLive.currentSprite] = slLoadTexture("assets/jungle/PNG/game_sprites/heart.png");
+		PlayerLive.sprite[PlayerLive.currentSprite] = slLoadTexture("assets/jungle/PNG/game_sprites/BananaLive.png");
 		PlayerLive.x = 160;
 		PlayerLive.y = 910;
 		PlayerLive.width = 65;
@@ -270,6 +380,9 @@ namespace game
 		int brick2 = slLoadTexture("assets/jungle/PNG/game_sprites/Rec.png");
 		int brickRock = slLoadTexture("assets/jungle/PNG/game_sprites/Rec4.png");
 
+		multiBall = false;
+		extraLife = false;
+		removeLife = false;
 
 		if (Actuallevel == Levels::Level1)
 		{
@@ -289,16 +402,17 @@ namespace game
 					Rects[iterator].y = RecYPosAux;
 					Rects[iterator].width = 140;
 					Rects[iterator].height = 50;
-					Rects[iterator].lives = livesForRec;
+					Rects[iterator].lifes = livesForRec;
 					Rects[iterator].sprite[2] = brick2;
 					Rects[iterator].sprite[1] = brick1;
 					Rects[iterator].sprite[0] = brick0;
+					Rects[iterator].havePowerUp = RandomizeBool();
 
-					if (Rects[iterator].lives == 3)
+					if (Rects[iterator].lifes == 3)
 					{
 						Rects[iterator].currentSprite = 2;
 					}
-					else if (Rects[iterator].lives == 2)
+					else if (Rects[iterator].lifes == 2)
 					{
 						Rects[iterator].currentSprite = 1;
 					}
@@ -337,7 +451,8 @@ namespace game
 					Rects[iterator].y = RecYPosAux;
 					Rects[iterator].width = 140;
 					Rects[iterator].height = 50;
-					Rects[iterator].lives = livesForRec;
+					Rects[iterator].lifes = livesForRec;
+					Rects[iterator].havePowerUp = RandomizeBool();
 
 					if (index == Layers - 1 && j != 2 && j != 3 && j != 4)
 					{
@@ -350,11 +465,11 @@ namespace game
 						Rects[iterator].sprite[1] = brick1;
 						Rects[iterator].sprite[0] = brick0;
 
-						if (Rects[iterator].lives == 3)
+						if (Rects[iterator].lifes == 3)
 						{
 							Rects[iterator].currentSprite = 2;
 						}
-						else if (Rects[iterator].lives == 2)
+						else if (Rects[iterator].lifes == 2)
 						{
 							Rects[iterator].currentSprite = 1;
 						}
@@ -394,7 +509,8 @@ namespace game
 					Rects[iterator].y = RecYPosAux;
 					Rects[iterator].width = 140;
 					Rects[iterator].height = 50;
-					Rects[iterator].lives = livesForRec;
+					Rects[iterator].lifes = livesForRec;
+					Rects[iterator].havePowerUp = RandomizeBool();
 
 					if (index == Layers - 3 && j != 0 && j != 6)
 					{
@@ -407,11 +523,11 @@ namespace game
 						Rects[iterator].sprite[1] = brick1;
 						Rects[iterator].sprite[0] = brick0;
 
-						if (Rects[iterator].lives == 3)
+						if (Rects[iterator].lifes == 3)
 						{
 							Rects[iterator].currentSprite = 2;
 						}
-						else if (Rects[iterator].lives == 2)
+						else if (Rects[iterator].lifes == 2)
 						{
 							Rects[iterator].currentSprite = 1;
 						}
@@ -451,7 +567,8 @@ namespace game
 					Rects[iterator].y = RecYPosAux;
 					Rects[iterator].width = 140;
 					Rects[iterator].height = 50;
-					Rects[iterator].lives = livesForRec;
+					Rects[iterator].lifes = livesForRec;
+					Rects[iterator].havePowerUp = RandomizeBool();
 
 					if ((index == 0) || (index == Layers - 1) && (j != 3))
 					{
@@ -464,11 +581,11 @@ namespace game
 						Rects[iterator].sprite[1] = brick1;
 						Rects[iterator].sprite[0] = brick0;
 
-						if (Rects[iterator].lives == 3)
+						if (Rects[iterator].lifes == 3)
 						{
 							Rects[iterator].currentSprite = 2;
 						}
-						else if (Rects[iterator].lives == 2)
+						else if (Rects[iterator].lifes == 2)
 						{
 							Rects[iterator].currentSprite = 1;
 						}
@@ -508,7 +625,8 @@ namespace game
 					Rects[iterator].y = RecYPosAux;
 					Rects[iterator].width = 140;
 					Rects[iterator].height = 50;
-					Rects[iterator].lives = livesForRec;
+					Rects[iterator].lifes = livesForRec;
+					Rects[iterator].havePowerUp = RandomizeBool();
 
 					if ((index == 0) || (index == 1 && j == 0 || j == 3 || j == 6) || (index == 2 && j == 0 || j == 6) || (index == 3 && j == 0 || j == 3 || j == 6) || (index == 4 && j == 0 || j == 6) || (index == 5 && j == 0 || j == 3 || j == 6))
 					{
@@ -521,11 +639,11 @@ namespace game
 						Rects[iterator].sprite[1] = brick1;
 						Rects[iterator].sprite[0] = brick0;
 
-						if (Rects[iterator].lives == 3)
+						if (Rects[iterator].lifes == 3)
 						{
 							Rects[iterator].currentSprite = 2;
 						}
-						else if (Rects[iterator].lives == 2)
+						else if (Rects[iterator].lifes == 2)
 						{
 							Rects[iterator].currentSprite = 1;
 						}
@@ -547,191 +665,6 @@ namespace game
 				RecYPosAux -= 55;
 			}
 		}
-	}
-
-	void GameUpdate(Screen& currentScreen)
-	{
-		CollisionCkeck(currentScreen);
-
-		if (state == GameState::Playing)
-		{
-			for (int i = 0; i < actualBalls; i++)
-			{
-				BallMovement(ball[i]);
-			}
-
-			PlayerInput();
-			if (Player.currentSprite != 0)
-			{
-				timer += slGetDeltaTime();
-				if (timer > TIME_FOR_SECOND_ANIMATION)
-				{
-					Player.currentSprite = 0;
-				}
-				else if (timer > TIME_FOR_FIRST_ANIMATION)
-				{
-					Player.currentSprite = 2;
-				}
-			}
-			else
-			{
-				timer = 0;
-			}
-
-			state = ShouldContinue();
-		}
-
-	}
-
-	void PlayerInput()
-	{
-		if (state == GameState::Playing)
-		{
-			if (slGetKey(SL_KEY_LEFT) && Player.x > 0 + Player.width / 2)
-			{
-				Player.x -= Player.SPEED * slGetDeltaTime();
-			}
-			if (slGetKey(SL_KEY_RIGHT) && Player.x < SCREEN_WIDTH - Player.width / 2)
-			{
-				Player.x += Player.SPEED * slGetDeltaTime();
-			}
-		}
-
-	}
-
-	void DrawGame(Screen currentScreen)
-	{
-
-		if (state == GameState::Playing)
-		{
-			double livesAuxX = 160;
-
-			DrawSprite(BackGround);
-			for (int i = 0; i < REC_AMOUNT; i++)
-			{
-				if (Rects[i].isAlive)
-				{
-					DrawSprite(Rects[i]);
-					/*slRectangleFill(Rects[i].x, Rects[i].y, Rects[i].width, Rects[i].height);*/
-				}
-			}
-			slSetForeColor(Player.color.r, Player.color.g, Player.color.b, 1);
-			slSprite(Player.sprite[Player.currentSprite], Player.x, Player.y, Player.width + FIX_PLAYER_WIDTH, Player.height * FIX_PLAYER_HEIGHT);
-
-			for (int i = 0; i < actualBalls; i++)
-			{
-				slSetForeColor(ball[i].color.r, ball[i].color.g, ball[i].color.b, 1);
-				slSprite(ball[i].sprite, ball[i].x, ball[i].y, ball[i].width, ball[i].height);
-			}
-
-			DrawSprite(Top_Height_Line);
-
-			DrawSprite(Lives_Board);
-
-			DrawSprite(Pause_Button);
-			for (int i = 0; i < Player.lives; i++)
-			{
-				slSetForeColor(PlayerLive.color.r, PlayerLive.color.g, PlayerLive.color.b, 1);
-				slSprite(PlayerLive.sprite[PlayerLive.currentSprite], livesAuxX, PlayerLive.y, PlayerLive.width, PlayerLive.height);
-				livesAuxX += 35;
-			}
-			/*slRectangleFill(ball.x, ball.y, ball.width, ball.height);
-
-			slRectangleFill(Player.x, Player.y, Player.width, Player.height);*/
-		}
-		else if (state == GameState::Win)
-		{
-			DrawSprite(BackGround2);
-
-			DrawSprite(WoodBackGround);
-
-			DrawSprite(PaperBackGround);
-
-			if (Player.lives == 3)
-			{
-				DrawSprite(Win_3Star);
-			}
-			else if (Player.lives == 2)
-			{
-				DrawSprite(Win_2Star);
-			}
-			else
-			{
-				DrawSprite(Win_1Star);
-			}
-
-			DrawSprite(Win_Leaf);
-
-			DrawSprite(Next_Button);
-
-			DrawSprite(Menu_Button);
-		}
-		else if (state == GameState::Lose)
-		{
-			DrawSprite(BackGround2);
-
-			DrawSprite(WoodBackGround);
-
-			DrawSprite(PaperBackGround);
-
-			DrawSprite(Lose_0Star);
-
-			DrawSprite(Lose_Leaf);
-
-			DrawSprite(Menu_Button);
-
-			DrawSprite(Restart_Button);
-		}
-		else if (state == GameState::Paused)
-		{
-			DrawSprite(BackGround2);
-
-			DrawSprite(WoodBackGround);
-
-			DrawSprite(PaperBackGround);
-
-			DrawSprite(Pause_Leaf);
-
-			DrawSprite(Menu_Button);
-
-			DrawSprite(Close_Button);
-
-			DrawSprite(Restart_Button);
-
-		}
-		else if (state == GameState::ControlRules)
-		{
-			DrawSprite(BackGround);
-
-			DrawSprite(WoodBackGround);
-
-			DrawSprite(Control_Rules);
-
-			DrawSprite(Rules_Leaf);
-
-			DrawSprite(Next_Button);
-		}
-		else if (state == GameState::PowerUpRules)
-		{
-			DrawSprite(BackGround);
-
-			DrawSprite(WoodBackGround);
-
-			DrawSprite(PowerUp_Rules);
-
-			DrawSprite(Rules_Leaf);
-
-			DrawSprite(Back_Button);
-
-			DrawSprite(Play_Button);
-
-		}
-	}
-
-	void DrawSprite(RecSprites Sprite)
-	{
-		slSetForeColor(Sprite.color.r, Sprite.color.g, Sprite.color.b, 1);
-		slSprite(Sprite.sprite[Sprite.currentSprite], Sprite.x, Sprite.y, Sprite.width, Sprite.height);
 	}
 
 	bool CircleRect(Ball& ball, RecSprites& rec)
@@ -774,41 +707,7 @@ namespace game
 		return false;
 
 	}
-
-	GameState ShouldContinue()
-	{
-		int aliveRecCounter = 0;
-
-		for (int i = 0; i < REC_AMOUNT; i++)
-		{
-			if (!Rects[i].isaRock)
-			{
-				if (Rects[i].lives < 1)
-				{
-					Rects[i].isAlive = false;
-				}
-				else
-				{
-					aliveRecCounter++;
-				}
-			}
-
-		}
-
-		if (aliveRecCounter == 0)
-		{
-			return GameState::Win;
-		}
-		if (Player.lives < 1)
-		{
-			return GameState::Lose;
-		}
-
-
-
-		return GameState::Playing;
-	}
-
+	
 	void CollisionCkeck(Screen& currentScreen)
 	{
 		int mousePositionX = slGetMouseX();
@@ -819,7 +718,7 @@ namespace game
 			int aliveBalls = 0;
 			for (int i = 0; i < actualBalls; i++)
 			{
-				if (ball[i].y < Player.y - Player.height / 2)
+				if (ball[i].y < 0)
 				{
 					ball[i].speed = ball[i].BASE_SPEED;
 					ball[i].isAlive = false;
@@ -857,7 +756,7 @@ namespace game
 				ball[0].directionY *= -1;
 				ball[0].directionX += RandomPullOut();
 				ball[0].speed = ball[0].BASE_SPEED;
-				Player.lives--;
+				Player.lifes--;
 			}
 
 
@@ -900,8 +799,8 @@ namespace game
 
 							if (!Rects[i].isaRock)
 							{
-								Rects[i].lives -= 1;
-								if (Rects[i].lives > 0)
+								Rects[i].lifes -= 1;
+								if (Rects[i].lifes > 0)
 								{
 									Rects[i].currentSprite--;
 								}
@@ -1099,7 +998,7 @@ namespace game
 			}
 		}
 	}
-
+	
 	void PlayerColision(Ball& ball)
 	{
 		float testX = ball.x;
@@ -1153,14 +1052,195 @@ namespace game
 		}
 
 	}
-
+	
 	bool RandomizeBool()
 	{
-		if (rand() % 2 == 1)
+		if (rand() % 5 == 1)
 		{
 			return true;
 		}
 		return false;
+	}
+	
+	void PlayerInput()
+	{
+		if (state == GameState::Playing)
+		{
+			if (slGetKey(SL_KEY_LEFT) && Player.x > 0 + Player.width / 2)
+			{
+				Player.x -= Player.SPEED * slGetDeltaTime();
+			}
+			if (slGetKey(SL_KEY_RIGHT) && Player.x < SCREEN_WIDTH - Player.width / 2)
+			{
+				Player.x += Player.SPEED * slGetDeltaTime();
+			}
+		}
+
+	}
+
+	void initStatesSprites()
+	{
+		Win_Leaf.sprite[Win_Leaf.currentSprite] = slLoadTexture("assets/jungle/PNG/you_win/leaf.png");
+		Win_Leaf.x = 550;
+		Win_Leaf.y = 730;
+		Win_Leaf.width = 600;
+		Win_Leaf.height = 220;
+
+		Win_3Star.sprite[Win_3Star.currentSprite] = slLoadTexture("assets/jungle/PNG/you_win/3star.png");
+		Win_3Star.x = 550;
+		Win_3Star.y = 530;
+		Win_3Star.width = 600;
+		Win_3Star.height = 220;
+
+		Win_2Star.sprite[Win_2Star.currentSprite] = slLoadTexture("assets/jungle/PNG/you_win/2star.png");
+		Win_2Star.x = 550;
+		Win_2Star.y = 530;
+		Win_2Star.width = 600;
+		Win_2Star.height = 220;
+
+		Win_1Star.sprite[Win_1Star.currentSprite] = slLoadTexture("assets/jungle/PNG/you_win/1star.png");
+		Win_1Star.x = 550;
+		Win_1Star.y = 530;
+		Win_1Star.width = 600;
+		Win_1Star.height = 220;
+
+		WoodBackGround.sprite[WoodBackGround.currentSprite] = slLoadTexture("assets/jungle/PNG/you_win/WoodBackGround.png");
+		WoodBackGround.x = 550;
+		WoodBackGround.y = 420;
+		WoodBackGround.width = 760;
+		WoodBackGround.height = 700;
+
+		PaperBackGround.sprite[PaperBackGround.currentSprite] = slLoadTexture("assets/jungle/PNG/you_win/PaperBackGround.png");
+		PaperBackGround.x = 550;
+		PaperBackGround.y = 420;
+		PaperBackGround.width = 660;
+		PaperBackGround.height = 600;
+
+		PaperBackGround_Pause.sprite[PaperBackGround.currentSprite] = slLoadTexture("assets/jungle/PNG/pause/PaperBackGround.png");
+		PaperBackGround_Pause.x = 550;
+		PaperBackGround_Pause.y = 420;
+		PaperBackGround_Pause.width = 700;
+		PaperBackGround_Pause.height = 600;
+
+		BackGround2.sprite[BackGround2.currentSprite] = slLoadTexture("assets/jungle/PNG/pause/BackGround.png");
+		BackGround2.x = 550;
+		BackGround2.y = 375;
+		BackGround2.width = 1100;
+		BackGround2.height = 1150;
+
+		Lose_0Star.sprite[Lose_0Star.currentSprite] = slLoadTexture("assets/jungle/PNG/you_lose/0star.png");
+		Lose_0Star.x = 550;
+		Lose_0Star.y = 530;
+		Lose_0Star.width = 600;
+		Lose_0Star.height = 220;
+
+		Lose_Leaf.sprite[Lose_Leaf.currentSprite] = slLoadTexture("assets/jungle/PNG/you_lose/leaf.png");
+		Lose_Leaf.x = 550;
+		Lose_Leaf.y = 730;
+		Lose_Leaf.width = 600;
+		Lose_Leaf.height = 220;
+
+		Next_Button.sprite[Next_Button.currentSprite] = slLoadTexture("assets/jungle/PNG/buttons/next.png");
+		Next_Button.x = 750;
+		Next_Button.y = 250;
+		Next_Button.width = 120;
+		Next_Button.height = 120;
+
+		Back_Button.sprite[Back_Button.currentSprite] = slLoadTexture("assets/jungle/PNG/buttons/prew.png");
+		Back_Button.x = 350;
+		Back_Button.y = 250;
+		Back_Button.width = 120;
+		Back_Button.height = 120;
+
+		Pause_Button.sprite[Pause_Button.currentSprite] = slLoadTexture("assets/jungle/PNG/buttons/pause.png");
+		Pause_Button.x = 1050;
+		Pause_Button.y = 905;
+		Pause_Button.width = 80;
+		Pause_Button.height = 80;
+
+		Menu_Button.sprite[Menu_Button.currentSprite] = slLoadTexture("assets/jungle/PNG/buttons/menu.png");
+		Menu_Button.x = 430;
+		Menu_Button.y = 250;
+		Menu_Button.width = 120;
+		Menu_Button.height = 120;
+
+		Play_Button.sprite[Play_Button.currentSprite] = slLoadTexture("assets/jungle/PNG/buttons/play.png");
+		Play_Button.x = 550;
+		Play_Button.y = 250;
+		Play_Button.width = 120;
+		Play_Button.height = 120;
+
+		Restart_Button.sprite[Restart_Button.currentSprite] = slLoadTexture("assets/jungle/PNG/buttons/restart.png");
+		Restart_Button.x = 680;
+		Restart_Button.y = 250;
+		Restart_Button.width = 120;
+		Restart_Button.height = 120;
+
+		Close_Button.sprite[Close_Button.currentSprite] = slLoadTexture("assets/jungle/PNG/pause/close.png");
+		Close_Button.x = 240;
+		Close_Button.y = 680;
+		Close_Button.width = 120;
+		Close_Button.height = 120;
+
+		Pause_Leaf.sprite[Pause_Leaf.currentSprite] = slLoadTexture("assets/jungle/PNG/pause/leaf.png");
+		Pause_Leaf.x = 550;
+		Pause_Leaf.y = 730;
+		Pause_Leaf.width = 600;
+		Pause_Leaf.height = 220;
+
+		PlayerPoints.sprite[PlayerPoints.currentSprite] = slLoadTexture("assets/jungle/PNG/buttons/pause.png");
+		PlayerPoints.x = 1050;
+		PlayerPoints.y = 905;
+		PlayerPoints.width = 80;
+		PlayerPoints.height = 80;
+
+		Control_Rules.sprite[Control_Rules.currentSprite] = slLoadTexture("assets/jungle/PNG/rules/ControlRules.png");
+		Control_Rules.x = 550;
+		Control_Rules.y = 420;
+		Control_Rules.width = 660;
+		Control_Rules.height = 600;
+
+		PowerUp_Rules.sprite[PowerUp_Rules.currentSprite] = slLoadTexture("assets/jungle/PNG/rules/PowerUpRules.png");
+		PowerUp_Rules.x = 550;
+		PowerUp_Rules.y = 420;
+		PowerUp_Rules.width = 660;
+		PowerUp_Rules.height = 600;
+
+		Rules_Leaf.sprite[Rules_Leaf.currentSprite] = slLoadTexture("assets/jungle/PNG/rules/leaf.png");
+		Rules_Leaf.x = 550;
+		Rules_Leaf.y = 730;
+		Rules_Leaf.width = 600;
+		Rules_Leaf.height = 220;
+
+		Lives_Board.sprite[Lives_Board.currentSprite] = slLoadTexture("assets/jungle/PNG/game_sprites/LivesBoard.png");
+		Lives_Board.x = 150;
+		Lives_Board.y = 910;
+		Lives_Board.width = 250;
+		Lives_Board.height = 60;
+
+		Top_Height_Line.sprite[Top_Height_Line.currentSprite] = slLoadTexture("assets/jungle/PNG/game_sprites/TopLine.png");
+		Top_Height_Line.x = 350;
+		Top_Height_Line.y = TOP_HEIGHT;
+		Top_Height_Line.width = 1600;
+		Top_Height_Line.height = 20;
+
+		PowerDownRemoveLife.sprite = slLoadTexture("assets/jungle/PNG/game_sprites/RottenBanana.png");
+		PowerDownRemoveLife.height = 60;
+		PowerDownRemoveLife.width = 60;
+		PowerDownRemoveLife.radius = 30;
+		PowerDownRemoveLife.directionY = -1;
+
+		PowerUpMultiBall.sprite = slLoadTexture("assets/jungle/PNG/game_sprites/CoconoutPowerUp.png");
+		PowerUpMultiBall.height = 60;
+		PowerUpMultiBall.width = 60;
+		PowerUpMultiBall.radius = 30;
+		PowerUpMultiBall.directionY = -1;
+
+		PowerUpExtraLife.sprite = slLoadTexture("assets/jungle/PNG/game_sprites/BananaPowerUp.png");
+		PowerUpExtraLife.height = 60;
+		PowerUpExtraLife.width = 60;
+		PowerUpExtraLife.radius = 30;
+		PowerUpExtraLife.directionY = -1;
 	}
 
 	bool MouseColision(float mousex, float mousey, RecSprites rec)
@@ -1196,7 +1276,7 @@ namespace game
 			return false;
 		}
 	}
-
+	
 	float RandomPullOut()
 	{
 		float randomFloat = rand() % 4 + 1;
@@ -1219,5 +1299,17 @@ namespace game
 		}
 
 		return randomFloat;
+	}
+
+	void DrawRecSprite(RecSprites Sprite)
+	{
+		slSetForeColor(Sprite.color.r, Sprite.color.g, Sprite.color.b, 1);
+		slSprite(Sprite.sprite[Sprite.currentSprite], Sprite.x, Sprite.y, Sprite.width, Sprite.height);
+	}
+
+	void DrawBallSprite(Ball Sprite)
+	{
+		slSetForeColor(Sprite.color.r, Sprite.color.g, Sprite.color.b, 1);
+		slSprite(Sprite.sprite, Sprite.x, Sprite.y, Sprite.width, Sprite.height);
 	}
 }

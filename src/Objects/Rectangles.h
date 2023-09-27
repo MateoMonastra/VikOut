@@ -8,7 +8,7 @@ struct RecSprites
 	double width = {0};
 	double height = {0};
 
-	int lives = {0};
+	int lifes = {0};
 	bool havePowerUp = false;
 	bool isAlive = true;
 	bool isaRock = false;
