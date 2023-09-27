@@ -34,7 +34,7 @@ namespace game
 	static const int TOP_HEIGHT = 865;
 	static const int REC_AMOUNT = 42;
 	static const int FIX_PLAYER_HEIGHT = 8;
-	static const int FIX_PLAYER_WIDTH = 60;
+	static const int FIX_PLAYER_WIDTH = 120;
 	static const int MAX_BALLS = 50; // NO SE SI SE PODIA USAR PUNTEROS ASI QUE PONGO UN NUMERO "Inalcanzable"
 	static int actualBalls = 1;
 	static float timer = 0;
@@ -164,6 +164,7 @@ namespace game
 			for (int i = 0; i < actualBalls; i++)
 			{
 				DrawBallSprite(ball[i]);
+			/*slRectangleFill(ball[i].x, ball[i].y, ball[i].width, ball[i].height);*/
 			}
 
 			DrawRecSprite(Top_Height_Line);
@@ -172,15 +173,14 @@ namespace game
 
 			DrawRecSprite(Pause_Button);
 
-			for (int i = 0; i < Player.lifes; i++)
+			for (int i = 0; i < Player.lives; i++)
 			{
 				slSetForeColor(PlayerLive.color.r, PlayerLive.color.g, PlayerLive.color.b, 1);
 				slSprite(PlayerLive.sprite[PlayerLive.currentSprite], livesAuxX, PlayerLive.y, PlayerLive.width, PlayerLive.height);
 				livesAuxX += 35;
 			}
-			/*slRectangleFill(ball.x, ball.y, ball.width, ball.height);
 
-			slRectangleFill(Player.x, Player.y, Player.width, Player.height);*/
+			/*slRectangleFill(Player.x, Player.y, Player.width, Player.height);*/
 		}
 		else if (state == GameState::Win)
 		{
@@ -190,11 +190,11 @@ namespace game
 
 			DrawRecSprite(PaperBackGround);
 
-			if (Player.lifes == 3)
+			if (Player.lives == 3)
 			{
 				DrawRecSprite(Win_3Star);
 			}
-			else if (Player.lifes == 2)
+			else if (Player.lives == 2)
 			{
 				DrawRecSprite(Win_2Star);
 			}
@@ -279,11 +279,7 @@ namespace game
 		{
 			if (Rects[i].isAlive)
 			{
-
-
-				if (!Rects[i].isaRock)
-				{
-					if (Rects[i].lifes < 1)
+					if (Rects[i].lives < 1)
 					{
 						Rects[i].isAlive = false;
 
@@ -317,7 +313,6 @@ namespace game
 					{
 						aliveRecCounter++;
 					}
-				}
 			}
 		}
 
@@ -325,7 +320,7 @@ namespace game
 		{
 			return GameState::Win;
 		}
-		if (Player.lifes < 1)
+		if (Player.lives < 1)
 		{
 			return GameState::Lose;
 		}
@@ -342,9 +337,9 @@ namespace game
 		Player.sprite[2] = slLoadTexture("assets/jungle/PNG/game_sprites/Release.png");
 		Player.x = 600;
 		Player.y = 90;
-		Player.width = 260;
+		Player.width = 200;
 		Player.height = 30;
-		Player.lifes = 3;
+		Player.lives = 3;
 
 		PlayerLive.sprite[PlayerLive.currentSprite] = slLoadTexture("assets/jungle/PNG/game_sprites/BananaLive.png");
 		PlayerLive.x = 160;
@@ -367,22 +362,24 @@ namespace game
 			ball[i].width = 50;
 			ball[i].radius = 25;
 			ball[i].directionX = RandomPullOut();
+			ball[i].speed = ball[i].BASE_SPEED;
 		}
 
 		for (int i = 0; i < REC_AMOUNT; i++)
 		{
-			Rects[i].isaRock = false;
 			Rects[i].isAlive = true;
 		}
 
 		int brick0 = slLoadTexture("assets/jungle/PNG/game_sprites/Rec3.png");
 		int brick1 = slLoadTexture("assets/jungle/PNG/game_sprites/Rec2.png");
 		int brick2 = slLoadTexture("assets/jungle/PNG/game_sprites/Rec.png");
-		int brickRock = slLoadTexture("assets/jungle/PNG/game_sprites/Rec4.png");
+
 
 		multiBall = false;
 		extraLife = false;
 		removeLife = false;
+
+		actualBalls = 1;
 
 		if (Actuallevel == Levels::Level1)
 		{
@@ -402,17 +399,17 @@ namespace game
 					Rects[iterator].y = RecYPosAux;
 					Rects[iterator].width = 140;
 					Rects[iterator].height = 50;
-					Rects[iterator].lifes = livesForRec;
+					Rects[iterator].lives = livesForRec;
 					Rects[iterator].sprite[2] = brick2;
 					Rects[iterator].sprite[1] = brick1;
 					Rects[iterator].sprite[0] = brick0;
 					Rects[iterator].havePowerUp = RandomizeBool();
 
-					if (Rects[iterator].lifes == 3)
+					if (Rects[iterator].lives == 3)
 					{
 						Rects[iterator].currentSprite = 2;
 					}
-					else if (Rects[iterator].lifes == 2)
+					else if (Rects[iterator].lives == 2)
 					{
 						Rects[iterator].currentSprite = 1;
 					}
@@ -451,25 +448,23 @@ namespace game
 					Rects[iterator].y = RecYPosAux;
 					Rects[iterator].width = 140;
 					Rects[iterator].height = 50;
-					Rects[iterator].lifes = livesForRec;
+					Rects[iterator].lives = livesForRec;
 					Rects[iterator].havePowerUp = RandomizeBool();
 
 					if (index == Layers - 1 && j != 2 && j != 3 && j != 4)
 					{
-						Rects[iterator].sprite[Rects[iterator].currentSprite] = brickRock;
-						Rects[iterator].isaRock = true;
+						Rects[iterator].lives = 3;
 					}
-					else
-					{
+					
 						Rects[iterator].sprite[2] = brick2;
 						Rects[iterator].sprite[1] = brick1;
 						Rects[iterator].sprite[0] = brick0;
 
-						if (Rects[iterator].lifes == 3)
+						if (Rects[iterator].lives == 3)
 						{
 							Rects[iterator].currentSprite = 2;
 						}
-						else if (Rects[iterator].lifes == 2)
+						else if (Rects[iterator].lives == 2)
 						{
 							Rects[iterator].currentSprite = 1;
 						}
@@ -477,7 +472,7 @@ namespace game
 						{
 							Rects[iterator].currentSprite = 0;
 						}
-					}
+					
 					RecXPosAux += 145;
 					iterator++;
 				}
@@ -509,25 +504,23 @@ namespace game
 					Rects[iterator].y = RecYPosAux;
 					Rects[iterator].width = 140;
 					Rects[iterator].height = 50;
-					Rects[iterator].lifes = livesForRec;
+					Rects[iterator].lives = livesForRec;
 					Rects[iterator].havePowerUp = RandomizeBool();
 
 					if (index == Layers - 3 && j != 0 && j != 6)
 					{
-						Rects[iterator].sprite[Rects[iterator].currentSprite] = brickRock;
-						Rects[iterator].isaRock = true;
+						Rects[iterator].lives = 3;
 					}
-					else
-					{
+					
 						Rects[iterator].sprite[2] = brick2;
 						Rects[iterator].sprite[1] = brick1;
 						Rects[iterator].sprite[0] = brick0;
 
-						if (Rects[iterator].lifes == 3)
+						if (Rects[iterator].lives == 3)
 						{
 							Rects[iterator].currentSprite = 2;
 						}
-						else if (Rects[iterator].lifes == 2)
+						else if (Rects[iterator].lives == 2)
 						{
 							Rects[iterator].currentSprite = 1;
 						}
@@ -535,7 +528,7 @@ namespace game
 						{
 							Rects[iterator].currentSprite = 0;
 						}
-					}
+					
 					RecXPosAux += 145;
 					iterator++;
 				}
@@ -567,25 +560,23 @@ namespace game
 					Rects[iterator].y = RecYPosAux;
 					Rects[iterator].width = 140;
 					Rects[iterator].height = 50;
-					Rects[iterator].lifes = livesForRec;
+					Rects[iterator].lives = livesForRec;
 					Rects[iterator].havePowerUp = RandomizeBool();
 
 					if ((index == 0) || (index == Layers - 1) && (j != 3))
 					{
-						Rects[iterator].sprite[Rects[iterator].currentSprite] = brickRock;
-						Rects[iterator].isaRock = true;
+						Rects[iterator].lives = 3;
 					}
-					else
-					{
+					
 						Rects[iterator].sprite[2] = brick2;
 						Rects[iterator].sprite[1] = brick1;
 						Rects[iterator].sprite[0] = brick0;
 
-						if (Rects[iterator].lifes == 3)
+						if (Rects[iterator].lives == 3)
 						{
 							Rects[iterator].currentSprite = 2;
 						}
-						else if (Rects[iterator].lifes == 2)
+						else if (Rects[iterator].lives == 2)
 						{
 							Rects[iterator].currentSprite = 1;
 						}
@@ -593,7 +584,7 @@ namespace game
 						{
 							Rects[iterator].currentSprite = 0;
 						}
-					}
+					
 					RecXPosAux += 145;
 					iterator++;
 				}
@@ -625,25 +616,23 @@ namespace game
 					Rects[iterator].y = RecYPosAux;
 					Rects[iterator].width = 140;
 					Rects[iterator].height = 50;
-					Rects[iterator].lifes = livesForRec;
+					Rects[iterator].lives = livesForRec;
 					Rects[iterator].havePowerUp = RandomizeBool();
 
 					if ((index == 0) || (index == 1 && j == 0 || j == 3 || j == 6) || (index == 2 && j == 0 || j == 6) || (index == 3 && j == 0 || j == 3 || j == 6) || (index == 4 && j == 0 || j == 6) || (index == 5 && j == 0 || j == 3 || j == 6))
 					{
-						Rects[iterator].sprite[Rects[iterator].currentSprite] = brickRock;
-						Rects[iterator].isaRock = true;
+						Rects[iterator].lives = 3;
 					}
-					else
-					{
+					
 						Rects[iterator].sprite[2] = brick2;
 						Rects[iterator].sprite[1] = brick1;
 						Rects[iterator].sprite[0] = brick0;
 
-						if (Rects[iterator].lifes == 3)
+						if (Rects[iterator].lives == 3)
 						{
 							Rects[iterator].currentSprite = 2;
 						}
-						else if (Rects[iterator].lifes == 2)
+						else if (Rects[iterator].lives == 2)
 						{
 							Rects[iterator].currentSprite = 1;
 						}
@@ -651,7 +640,7 @@ namespace game
 						{
 							Rects[iterator].currentSprite = 0;
 						}
-					}
+					
 					RecXPosAux += 145;
 					iterator++;
 				}
@@ -756,7 +745,7 @@ namespace game
 				ball[0].directionY *= -1;
 				ball[0].directionX += RandomPullOut();
 				ball[0].speed = ball[0].BASE_SPEED;
-				Player.lifes--;
+				Player.lives--;
 			}
 
 
@@ -769,42 +758,45 @@ namespace game
 
 						if (CircleRect(ball[j], Rects[i]))
 						{
-							float LEFT_REC = Rects[j].x - Rects[i].width / 2;
-							float RIGHT_REC = Rects[i].x + Rects[i].width / 2;
-							float UP_REC = Rects[i].y + Rects[i].height / 2;
-							float downRec = Rects[i].y - Rects[i].height / 2;
 
-							if (RIGHT_REC < ball[j].x + ball[j].radius)
-							{
-								ball[j].x += ball[j].radius / 2;
-								ball[j].directionX *= -1;
-							}
-							else if (LEFT_REC > ball[j].x + ball[j].radius)
-							{
-								ball[j].x -= ball[j].radius / 2;
-								ball[j].directionX *= -1;
-							}
+								float leftRec = Rects[j].x - Rects[i].width / 2;
+								float rightRec = Rects[i].x + Rects[i].width / 2;
+								float upRec = Rects[i].y + Rects[i].height / 2;
+								float downRec = Rects[i].y - Rects[i].height / 2;
 
-							if (downRec < ball[j].y + ball[j].radius)
-							{
-								ball[j].y -= ball[j].radius / 2;
-								ball[j].directionY *= -1;
-							}
-							else if (UP_REC > ball[j].y + ball[j].radius)
-							{
-								ball[j].y += ball[j].radius / 2;
-								ball[j].directionY *= -1;
-							}
-
-
-							if (!Rects[i].isaRock)
-							{
-								Rects[i].lifes -= 1;
-								if (Rects[i].lifes > 0)
+								if (rightRec < ball[j].x + ball[j].radius)
 								{
-									Rects[i].currentSprite--;
+									ball[j].x += ball[j].radius;
+									ball[j].directionX *= -1;
 								}
-							}
+								else if (leftRec > ball[j].x + ball[j].radius)
+								{
+									ball[j].x -= ball[j].radius;
+									ball[j].directionX *= -1;
+								}
+
+
+								if (downRec < ball[j].y + ball[j].radius)
+								{
+									ball[j].y -= ball[j].radius;
+									ball[j].directionY *= -1;
+								}
+								else if (upRec > ball[j].y + ball[j].radius)
+								{
+									ball[j].y += ball[j].radius;
+									ball[j].directionY *= -1;
+								}
+
+
+								AddBallSpeed(ball[j]);
+
+									Rects[i].lives -= 1;
+									if (Rects[i].lives > 0)
+									{
+										Rects[i].currentSprite--;
+									}
+								
+							
 						}
 
 
@@ -871,7 +863,6 @@ namespace game
 
 					for (int i = 0; i < REC_AMOUNT; i++)
 					{
-						Rects[i].isaRock = false;
 						Rects[i].isAlive = true;
 					}
 
@@ -906,7 +897,6 @@ namespace game
 
 					for (int i = 0; i < REC_AMOUNT; i++)
 					{
-						Rects[i].isaRock = false;
 						Rects[i].isAlive = true;
 					}
 
@@ -950,7 +940,6 @@ namespace game
 
 					for (int i = 0; i < REC_AMOUNT; i++)
 					{
-						Rects[i].isaRock = false;
 						Rects[i].isAlive = true;
 					}
 

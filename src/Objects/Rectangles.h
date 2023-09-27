@@ -8,10 +8,9 @@ struct RecSprites
 	double width = {0};
 	double height = {0};
 
-	int lifes = {0};
+	int lives = {0};
 	bool havePowerUp = false;
 	bool isAlive = true;
-	bool isaRock = false;
 
 	static const int MAX_SPRITES = 3;
 	int sprite[MAX_SPRITES] = {0};

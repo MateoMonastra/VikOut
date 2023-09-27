@@ -25,9 +25,9 @@ namespace powerUp
 			PowerUpExtraLife.y += PowerUpExtraLife.speed * PowerUpExtraLife.directionY * slGetDeltaTime();
 			if (CircleRect(PowerUpExtraLife, Player))
 			{
-				if (Player.lifes!=3)
+				if (Player.lives!=3)
 				{
-				Player.lifes++;
+				Player.lives++;
 				}
 				extraLife = false;
 			}
@@ -37,7 +37,7 @@ namespace powerUp
 			PowerDownRemoveLife.y += PowerDownRemoveLife.speed * PowerDownRemoveLife.directionY * slGetDeltaTime();
 			if (CircleRect(PowerDownRemoveLife, Player))
 			{
-				Player.lifes--;
+				Player.lives--;
 				removeLife = false;
 			}
 		}

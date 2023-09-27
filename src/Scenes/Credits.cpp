@@ -37,7 +37,7 @@ namespace credits
 		WoodBackGround.SpriteW = 760;
 		WoodBackGround.SpriteH = 700;
 
-		PaperBackGround.sprite = slLoadTexture("assets/jungle/PNG/you_win/PaperBackGround.png");
+		PaperBackGround.sprite = slLoadTexture("assets/jungle/PNG/credits/CreditPaperBackGround.png");
 		PaperBackGround.TexturePosition.x = 550;
 		PaperBackGround.TexturePosition.y = 420;
 		PaperBackGround.SpriteW = 660;
@@ -63,7 +63,6 @@ namespace credits
 
 
 	}
-
 
 	void CreditsUpdate(Screen& currentScene)
 	{
