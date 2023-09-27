@@ -141,7 +141,6 @@ namespace game
 				if (Rects[i].isAlive)
 				{
 					DrawRecSprite(Rects[i]);
-					/*slRectangleFill(Rects[i].x, Rects[i].y, Rects[i].width, Rects[i].height);*/
 				}
 			}
 
@@ -164,7 +163,6 @@ namespace game
 			for (int i = 0; i < actualBalls; i++)
 			{
 				DrawBallSprite(ball[i]);
-			/*slRectangleFill(ball[i].x, ball[i].y, ball[i].width, ball[i].height);*/
 			}
 
 			DrawRecSprite(Top_Height_Line);
@@ -179,8 +177,6 @@ namespace game
 				slSprite(PlayerLive.sprite[PlayerLive.currentSprite], livesAuxX, PlayerLive.y, PlayerLive.width, PlayerLive.height);
 				livesAuxX += 35;
 			}
-
-			/*slRectangleFill(Player.x, Player.y, Player.width, Player.height);*/
 		}
 		else if (state == GameState::Win)
 		{

@@ -46,9 +46,9 @@ namespace menu
 		BackGround.SpriteH = 1100;
 
 		Title.sprite = slLoadTexture("assets/jungle/PNG/menu/Title.png");
-		Title.TexturePosition = { 800 / 2 + 130 , 800 - 120 };
-		Title.SpriteW = 900;
-		Title.SpriteH = 600;
+		Title.TexturePosition = { 800 / 2 + 160 , 730 };
+		Title.SpriteW = 750;
+		Title.SpriteH = 450;
 
 		Play.sprite = slLoadTexture("assets/jungle/PNG/menu/play.png");
 		Play.TexturePosition = { 400 - 60, 375 };
